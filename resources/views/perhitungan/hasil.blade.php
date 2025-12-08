@@ -6,7 +6,7 @@
 <div class="max-w-5xl mx-auto px-4 py-12">
     <h1 class="text-4xl font-bold text-gray-800 mb-2">Hasil Perhitungan MABAC</h1>
     <p class="text-gray-600 mb-8">Berikut adalah peringkat mobil berdasarkan analisis MABAC</p>
-    
+
     <div class="mb-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <p class="text-blue-800"><strong>📊 Analisis didasarkan pada {{ count($results) }} mobil yang dipilih</strong></p>
         <p class="text-sm text-blue-700 mt-2">Untuk mengubah mobil yang dianalisis, <a href="{{ route('perhitungan.index') }}" class="underline hover:text-blue-900">klik di sini</a></p>
@@ -92,13 +92,13 @@
         <div class="bg-green-50 border-l-4 border-green-600 p-6 rounded">
             <h3 class="text-lg font-bold text-gray-800 mb-3">🏆 Rekomendasi Terbaik</h3>
             @php $top = $results[0]; @endphp
-            
+
             @if($top['mobil']->gambar)
                 <img src="{{ $top['mobil']->gambar }}" alt="{{ $top['mobil']->merk }}" class="w-full h-40 object-cover rounded-lg mb-4 border border-green-300">
             @else
                 <div class="w-full h-40 bg-gray-300 rounded-lg flex items-center justify-center text-5xl mb-4 border border-green-300">🚗</div>
             @endif
-            
+
             <div>
                 <p class="font-semibold text-xl text-gray-800">{{ $top['mobil']->merk }} {{ $top['mobil']->model }}</p>
                 <p class="text-sm text-gray-600 mb-2">{{ $top['mobil']->tahun }} | {{ $top['mobil']->tipe }}</p>

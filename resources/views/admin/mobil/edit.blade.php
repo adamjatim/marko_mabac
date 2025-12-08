@@ -91,7 +91,7 @@
 
             <div>
                 <label for="gambar" class="block font-semibold text-gray-800 mb-2">Gambar Mobil</label>
-                
+
                 <div id="currentGambarDiv" class="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-300">
                     <p class="text-sm font-semibold text-gray-700 mb-2">📸 Gambar Saat Ini:</p>
                     @if($mobil->gambar)

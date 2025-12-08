@@ -56,7 +56,7 @@
             <div class="bg-gray-50 p-6 rounded-lg">
                 <h3 class="font-bold text-gray-800 mb-4">Pilih Mobil yang Akan Dianalisis</h3>
                 <p class="text-sm text-gray-600 mb-4">Minimal pilih 2 mobil untuk melakukan perhitungan</p>
-                
+
                 <div class="space-y-3">
                     <div class="flex gap-4 mb-4">
                         <button type="button" onclick="selectAllMobils()" class="text-sm bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
@@ -70,9 +70,9 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         @foreach($mobils as $mobil)
                         <label class="flex items-center p-4 border border-gray-300 rounded-lg hover:bg-gray-100 cursor-pointer transition">
-                            <input 
-                                type="checkbox" 
-                                name="mobil_ids[]" 
+                            <input
+                                type="checkbox"
+                                name="mobil_ids[]"
                                 value="{{ $mobil->id }}"
                                 class="mobil-checkbox w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer"
                                 checked

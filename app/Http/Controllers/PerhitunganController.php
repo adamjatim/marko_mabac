@@ -19,16 +19,16 @@ class PerhitunganController extends Controller
     public function calculate(Request $request)
     {
         $kriterias = Kriteria::all();
-        
+
         // Get selected mobil IDs
         $selected_mobil_ids = $request->input('mobil_ids', []);
-        
+
         // Validate minimum selection
         if (count($selected_mobil_ids) < 2) {
             return redirect()->route('perhitungan.index')
                 ->with('error', 'Minimal pilih 2 mobil untuk melakukan perhitungan MABAC');
         }
-        
+
         // Get only selected mobils
         $mobils = Mobil::whereIn('id', $selected_mobil_ids)->get();
 
