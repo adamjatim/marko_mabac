@@ -10,4 +10,18 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    build: {
+            rollupOptions: {
+                output: {
+                    // Customize the name for asset files (e.g., images, fonts, CSS)
+                    assetFileNames: 'assets/[name].[ext]',
+
+                    // Customize the name for code-split chunks
+                    chunkFileNames: 'assets/[name].js',
+
+                    // Customize the name for entry point files (e.g., your main JS/CSS files)
+                    entryFileNames: 'assets/[name].js',
+                },
+            },
+        },
 });
