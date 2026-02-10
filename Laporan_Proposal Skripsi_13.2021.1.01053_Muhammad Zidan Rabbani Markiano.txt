@@ -1,0 +1,670 @@
+Sistem Pendukung Keputusan Untuk Pemilihan Mobil Sesuai Keinginan Pembeli Menggunakan Metode MABAC
+
+
+PROPOSAL SKRIPSI
+
+
+Oleh:
+MUHAMMAD ZIDAN RABBANI MARKIANO
+13.2021.1.01053
+
+
+
+PROGRAM STRATA-1
+PROGRAM STUDI SISTEM INFORMASI
+FAKULTAS TEKNIK ELEKTRO DAN TEKNOLOGI INFORMASI
+INSTITUT TEKNOLOGI ADHI TAMA SURABAYA
+2025
+
+
+
+
+
+
+DAFTAR ISI
+Halaman
+HALAMAN JUDUL	i
+LEMBAR PENGESAHAN SIDANG	i
+DAFTAR ISI	iii
+DAFTAR GAMBAR	v
+DAFTAR TABEL	vi
+BAB 1  PENDAHULUAN	1
+1.1	Latar Belakang	1
+1.2	Rumusan Masalah	4
+1.3	Tujuan Penelitian	5
+1.4	Manfaat Penelitian	5
+1.5	Batasan Masalah	6
+1.6	Sistematika Penulisan	7
+BAB 2 TINJAUAN PUSTAKA	8
+2.1	Sistem Pendukung Keputusan (SPK)	8
+2.2	Definisi dan Perkembangan Mobil di Indonesia	9
+2.3	Kriteria Pemilihan Mobil	9
+2.4	Sumber dan Pengelolaan Data	11
+2.5	Metode MABAC	12
+2.5.1	Perhitungan dan Langkah-Langkah Metode MABAC	12
+2.5.2	Perbandingan Metode MABAC Dengan Metode SPK Lainnya	14
+2.5.3	Kelebihan dan Kekurangan Metode MABAC	15
+2.6	Sistem Berbasis Web	16
+2.6.1	Keunggulan Menggunakan Website	16
+BAB 3 ANALISIS DAN PERANCANGAN SISTEM	17
+3.1 	Analisa Sistem	17
+3.1.1 	Tujuan Analisa Sistem	17
+3.1.2 	Kebutuhan Data	17
+3.1.3 	Batasan Sistem	17
+3.2 	Metode MABAC	18
+3.2.1	Proses Pengumpulan Data	18
+3.2.2	Flowchart Metode MABAC	18
+3.2.3 	Penentuan Kriteria	18
+3.2.4 	Alternatif	23
+3.2.5 	Studi Kasus	24
+3.3	Perancangan Sistem	37
+3.3.1 	Diagram Konteks	37
+DAFTAR PUSTAKA	39
+
+
+
+
+DAFTAR GAMBAR
+
+Halaman
+Gambar 1.1 Grafik Data Wholesale Sumber data: (Gaikindo, 2025)	1
+Gambar 3.1 Flowchart Metode MABAC 2	18
+Gambar 3.3 DFD Level 0	37
+ 
+
+
+
+
+	DAFTAR TABEL	
+Halaman
+Tabel 3.1 Hasil Responden	21
+Tabel 3.2 Hasil Responden Kriteria Tambahan	22
+Tabel 3.3 Rincian Jumlah Alternatif	23
+Table 3.4 Rincian Jumlah Tipe Mobil	23
+Tabel 3.5 Kode dan Nama Alternatif	24
+Tabel 3.6 Kode, Tipe, dan Bobot Kriteria	25
+Tabel 3.7 Data-Data Alternatif dan Kriteria	29
+Tabel 3.8 Hasil Normalisasi	31
+Tabel 3.9 Nilai Matriks Tertimbang	33
+Tabel 3.10 Nilai Matriks Area Batas	34
+Tabel 3.11 Nilai Matriks Q	36
+Tabel 3.12 Nilai Skor Akhir	36
+
+
+
+BAB 1 
+PENDAHULUAN
+1.1 Latar Belakang
+	Perkembangan industri otomotif di Indonesia dalam lima tahun terakhir (2020 – 2025) menunjukkan dinamika yang sangat signifikan. Berdasarkan data Gabungan Industri Kendaraan Bermotor Indonesia (GAIKINDO), penjualan mobil nasional pada tahun 2023 sempat menyentuh angka lebih dari 1 juta unit, meski terjadi penurunan 37% pada semester I tahun 2025 akibat tantangan ekonomi dan perubahan perilaku konsumen (Gaikindo, 2025). Fenomena ini mengindikasikan tingginya dinamika pasar otomotif dalam menghadapi kompetisi produsen, perubahan teknologi, serta kebutuhan masyarakat yang semakin kompleks dan beragam, berikut adalah data wholesale periode 2020 – 2025 bulan Juni oleh GAIKINDO:
+
+Gambar 1.1 Grafik Data Wholesale
+Sumber data: (Gaikindo, 2025)
+      Kehadiran puluhan hingga ratusan model baru setiap tahun, dari berbagai produsen seperti Toyota, Honda, Daihatsu, Suzuki, hingga Hyundai dan Wuling, menjadikan pasar otomotif Indonesia sangat kompetitif. Setiap produsen berupaya mengunggulkan inovasi pada fitur keselamatan, efisiensi konsumsi bahan bakar, 
+desain, dan lain-lain. Kondisi ini menyebabkan calon pembeli harus mempertimbangkan berbagai aspek, mulai dari harga beli, kapasitas mesin, konsumsi bahan bakar, fitur keselamatan dan kenyamanan, hingga nilai jual kembali. Kompleksitas tersebut sering kali menimbulkan kesulitan bagi konsumen untuk melakukan perbandingan objektif, terlebih karena informasi yang relevan tersebar di berbagai sumber, kerap berbeda format, atau sulit dipahami secara sistematis (Sri, 2020).
+      Fenomena information overload menjadi tantangan utama dalam proses pengambilan keputusan pembelian mobil baru. Kemudahan akses data via website dealer resmi dan media otomotif, secara paradoks, justru sering membingungkan calon pembeli akibat keberlimpahan pilihan dan ragam spesifikasi (Sri, 2020). Banyak konsumen akhirnya membuat keputusan berdasarkan opini populer atau rekomendasi personal, bukan berdasarkan evaluasi sistematis, sehingga berpotensi pada ketidakpuasan atau penyesalan di kemudian hari.
+      Masalah seperti ini menuntut adanya solusi berbasis teknologi informasi yang mampu membantu proses pengambilan keputusan secara objektif, efisien, dan berbasis data aktual. Salah satu pendekatan yang telah terbukti secara ilmiah adalah Sistem Pendukung Keputusan (SPK). SPK adalah sistem yang membantu individu atau kelompok dalam memilih alternatif terbaik berdasarkan beberapa kriteria yang telah ditetapkan dan diberi bobot sesuai preferensi pengguna (Efraim Turban, 2014). Selain itu, menurut Rili, (2025) SPK juga berfungsi sebagai alat bantu bagi pengambil keputusan dalam memecahkan masalah yang kompleks dan melibatkan banyak kriteria. Penerapan SPK sangat relevan untuk membantu masyarakat menyeleksi pilihan mobil baru secara sistematis dan layak dipercaya.
+      Pengembangan sistem pendukung keputusan berbasis website menjadi semakin penting, karena memungkinkan seluruh masyarakat Indonesia mengakses alat bantu komparasi dan analisis mobil terbaru kapan saja dan dari mana saja. Website resmi dealer telah menjadi sumber utama untuk data aktual harga, fitur, dan spesifikasi produk, sehingga integrasinya dengan SPK dapat mengurangi bias informasi dan membantu seluruh masyarakat dalam membuat keputusan yang tepat dalam memilih mobil.
+      Salah satu metode multikriteria yang sangat efektif dan berkembang dalam implementasi SPK adalah Multi-Attributive Border Approximation Area Comparison (MABAC). Metode ini memberikan hasil ranking yang stabil, objektif, dan efisien untuk kasus dengan banyak alternatif serta kriteria berbasis data numerik—seperti dalam pemilihan mobil. MABAC juga diterima luas dalam literatur nasional, terbukti dari beberapa penelitian dan aplikasi yang telah menghasilkan sistem rekomendasi berbasis MABAC untuk kasus beasiswa, produk konsumen, hingga rekrutmen kerja di Indonesia (Iklima Ermis Ismail, 2022).
+      Berbagai metode dalam sistem pendukung keputusan multikriteria, seperti Simple Additive Weighting (SAW), Technique for Order Preference by Similarity to Ideal Solution (TOPSIS), Analytical Hierarchy Process (AHP), dan Multi-Attributive Border Approximation Area Comparison MABAC, memiliki kelebihan dan keterbatasan masing-masing. SAW mudah digunakan namun kurang sensitif terhadap data ekstrim, sedangkan TOPSIS dapat mengidentifikasi alternatif paling dekat dengan solusi ideal, tetapi proses normalisasinya cukup rumit. AHP unggul dalam pembobotan kriteria, tetapi menjadi kurang praktis jika jumlah alternatif sangat banyak. MABAC dipilih dalam penelitian ini karena memberikan perangkingan yang stabil dan objektif, prosesnya efisien untuk banyak alternatif, serta mudah diimplementasikan pada aplikasi berbasis web. Selain itu, MABAC tidak bergantung pada solusi ideal, sehingga cocok untuk kasus pemilihan mobil baru yang melibatkan banyak data kriteria dan alternatif.
+      Berbagai penelitian telah dilakukan untuk mengembangkan sistem pendukung keputusan dalam bidang otomotif, khususnya pada pemilihan mobil, menggunakan metode multikriteria yang beragam. Sebagai contoh, penelitian oleh Munir et al. (2025) mengimplementasikan metode SAW untuk merekomendasikan mobil bekas, menunjukan bagaimana sistem dapat memproses bobot kriteria dan mempermudah pengambilan keputusan bagi konsumen otomotif. Sementara itu, beberapa studi menggunakan metode TOPSIS untuk meningkatkan akurasi pemilihan kendaraan sesuai preferensi pengguna dengan memanfaatkan jarak ideal positif dan negatif dalam perhitungan ranking.
+      Penelitian dan pengembangan SPK berbasis web menggunakan MABAC untuk pemilihan mobil baru dari dealer resmi menawarkan keunggulan utama, diantaranya adalah kemudahan input bobot kriteria berdasarkan kebutuhan dan preferensi aktual pengguna, akses terhadap data dan fitur mutakhir dari berbagai dealer resmi yang terintegrasi dalam satu platform web, proses analisis dan rekomendasi yang objektif, transparan, serta valid secara ilmiah. Metode ini memiliki keunggulan dalam mengolah data multikriteria karena mampu mempertimbangkan jarak masing-masing alternatif terhadap nilai ideal dalam setiap kriteria dan meningkatkan stabilitas serta objektivitas dalam pengambilan keputusan (Hariyanto, 2025).
+      Dengan adanya sistem ini, diharapkan proses pengambilan keputusan dalam memilih mobil tidak hanya menjadi lebih mudah, tetapi juga lebih terukur dan rasional. Selain itu, sistem ini juga dapat menjadi referensi tambahan bagi konsumen yang menginginkan analisis objektif sebelum melakukan pembelian. Penelitian ini diharapkan dapat memberikan kontribusi dalam pengembangan aplikasi SPK berbasis metode MABAC di bidang otomotif, serta menjadi acuan dalam penerapan teknologi informasi dalam membantu proses pengambilan keputusan multikriteria.
+1.2 Rumusan Masalah
+      Berdasarkan latar belakang yang telah diuraikan, maka permasalahan yang diangkat dalam penelitian ini dapat dirumuskan ke dalam pertanyaan-pertanyaan sebagai berikut:
+1. Bagaimana merancang dan membangun sistem pendukung keputusan untuk membantu konsumen dalam memilih mobil baru berdasarkan beberapa kriteria penting?
+2. Bagaimana menerapkan metode MABAC (Multi-Attributive Border Approximation area Comparison) dalam sistem pendukung keputusan untuk menghasilkan rekomendasi mobil yang sesuai dengan preferensi konsumen?
+1.3 Tujuan Penelitian
+      Tujuan dari penelitian ini adalah sebagai berikut:
+1. Mengembangkan sebuah sistem pendukung keputusan yang dapat membantu konsumen dalam memilih mobil baru berdasarkan lima kriteria utama, yaitu harga baru, harga jual kembali, fitur keamanan, fitur kenyamanan, jarak tempuh kendaraan, kapasitas mesin, dan pajak.
+2. Menerapkan metode MABAC dalam proses pengambilan keputusan multikriteria untuk menghasilkan peringkat alternatif mobil secara objektif dan terukur.
+1.4 Manfaat Penelitian
+      Adapun manfaat yang diharapkan dari penelitian ini adalah sebagai berikut:
+1. Manfaat Akademis:
+* Memberikan kontribusi dalam pengembangan sistem pendukung keputusan berbasis metode MABAC, khususnya pada kasus pemilihan produk dengan banyak alternatif dan kriteria.
+2. Manfaat Praktis:
+* Menyediakan sistem rekomendasi berbasis website dengan data aktual yang bersumber dari dealer resmi, sehingga meningkatkan kepercayaan pengguna terhadap hasil yang diberikan.
+3. Manfaat Sosial:
+* Membantu konsumen umum dalam menentukan pilihan mobil yang paling sesuai dengan kebutuhan dan preferensinya secara lebih efisien dan objektif.
+1.5 Batasan Masalah
+1. Sistem berbasis web
+	Sistem pendukung keputusan yang dikembangkan merupakan sistem berbasis website. Pengembangan dilakukan untuk kebutuhan prototipe akademik, bukan untuk penggunaan komersial berskala besar.
+2. Kriteria penilaian terbatas pada tujuh aspek utama
+	Pemilihan mobil dalam sistem ini didasarkan pada lima kriteria utama yang didasarkan oleh hasil kuesioner dan diskusi dengan dosen pembimbing sehingga menghasilkan lima kriteria sebagai berikut:
+	a) Harga baru,
+	b) Harga jual kembali,
+	c) Fitur keamanan,
+	d) Fitur kenyamanan,
+	e) Jarak Tempuh kendaraan,
+   f) Kapasitas Mesin, dan
+   g) Pajak Kendaraan.
+3. Bobot kriteria ditentukan oleh pengguna
+	Sistem memberikan fleksibilitas kepada pengguna untuk memberikan bobot terhadap masing-masing kriteria sesuai dengan preferensi pribadi, guna mencerminkan kebutuhan individual secara lebih akurat.
+4. Sumber data terbatas pada informasi teknis dari website resmi dealer
+	Data mobil yang digunakan dalam sistem diperoleh secara selektif dari website resmi Gabungan Industri Kendaraan Bermotor Indonesia (Gaikindo, 2025) serta enam merek mobil populer di Indonesia, yaitu Toyota, Daihatsu, Honda, Suzuki, Hyundai, dan Wuling. Data yang digunakan bersifat teknis dan objektif. (mana linknya)
+5. Cakupan alternatif mobil terbatas pada keluaran tahun 2020–2025
+	Mobil yang menjadi objek dalam sistem ini adalah unit baru (bukan bekas) keluaran tahun 2020 hingga 2025 yang masih tersedia secara resmi melalui dealer. Model-model yang dipilih merupakan representasi dari masing-masing merek, namun tidak mencakup seluruh varian atau seri yang tersedia di pasar.
+6. Perankingan ditentukan berdasarkan merk mobil atau tipe mobil atau keseluruhan
+1.6 Sistematika Penulisan
+BAB 1: Pendahuluan, berisikan latar belakang, rumusan masalah, tujuan penelitian, manfaat penelitian, batasan masalah, dan sistematika penulisan.
+BAB 2: Landasan Teori, berisikan penjelasan mengenai sistem pendukung keputusan, definisi dan perkembangan mobil, kriteria pemilihan mobil, sumber dan pengelolaan data, metode MABAC, dan sistem berbasis web.
+BAB 3: Analisis dan perancangan sistem, menguraikan analisa sistem, metode MABAC, dan perancangan sistem.
+BAB 2
+TINJAUAN PUSTAKA
+2.1 Sistem Pendukung Keputusan (SPK)
+     Sistem Pendukung Keputusan (SPK) adalah suatu sistem informasi berbasis komputer yang dirancang untuk membantu pengambil keputusan dalam memecahkan permasalahan yang bersifat terstruktur, semi-terstruktur, maupun tidak terstruktur dengan menyediakan berbagai alternatif solusi yang dapat dievaluasi secara sistematis (Sumarno, 2020). SPK memanfaatkan integrasi data, model matematika, serta teknik analisis untuk menghasilkan rekomendasi pengambilan keputusan yang lebih akurat, cepat, dan efektif. Menurut penelitian di Indonesia, SPK memberikan kemampuan pemecahan masalah dan komunikasi solusi dalam kasus-kasus di mana keputusan sulit dilakukan secara manual atau karena terdapat banyak kriteria yang terlibat (Sidik Praptomo, 2023).
+      Pada sektor otomotif, SPK terbukti sangat berguna untuk membantu konsumen dan pelaku usaha dalam memilih produk otomotif terbaik yang didasarkan pada sejumlah kriteria seperti harga, spesifikasi mesin, konsumsi bahan bakar, fitur keselamatan, dan lain-lain (Sidik Praptomo, 2023). Dengan adanya SPK, proses seleksi mobil menjadi lebih mudah, terstruktur, dan dapat disesuaikan dengan preferensi pengguna. Penelitian lain juga menunjukkan bahwa aplikasi SPK dalam dunia otomotif tidak hanya memudahkan pengambilan keputusan tetapi juga meningkatkan efisiensi serta transparansi proses seleksi calon kendaraan (Ridwan, 2024).
+      Secara umum, perkembangan SPK diiringi peningkatan teknologi informasi, yang membuat implementasinya kini semakin luas sehingga dapat diakses oleh seluruh lapisan masyarakat. Dengan demikian, SPK menjadi solusi yang inklusif dan strategis untuk pengambilan keputusan multikriteria dalam berbagai bidang, khususnya pembelian mobil baru di Indonesia saat ini (Sidik Praptomo, 2023).
+      
+      
+2.2 Definisi dan Perkembangan Mobil di Indonesia
+      Mobil merupakan salah satu alat transportasi darat bermotor yang dirancang untuk mengangkut penumpang maupun barang. Dalam perkembangannya, mobil penumpang menjadi moda transportasi utama yang digunakan masyarakat modern karena memberikan kenyamanan, efisiensi waktu, dan fleksibilitas dalam mobilitas sehari-hari (Dyan Almaas Turkita, 2024). Selain sebagai sarana transportasi, mobil juga memiliki peran sosial-ekonomi, antara lain sebagai penunjang aktivitas kerja, gaya hidup, hingga penentu status sosial dalam masyarakat.
+      Di Indonesia, perkembangan industri otomotif sangat pesat, khususnya dalam lima tahun terakhir. Data Gabungan Industri Kendaraan Bermotor Indonesia (GAIKINDO) menunjukkan bahwa sejak tahun 2020 hingga 2025, pasar otomotif terus diramaikan dengan peluncuran berbagai model baru dari produsen besar seperti Toyota, Daihatsu, Honda, Suzuki, Hyundai, dan Wuling (Gaikindo, 2025) Kehadiran beragam tipe dan varian mobil baru dengan spesifikasi yang berbeda seringkali menimbulkan kebingungan bagi konsumen dalam menentukan pilihan terbaik sesuai dengan kebutuhan dan preferensi mereka (Sri, 2020).
+      Keragaman pilihan mobil tersebut menjadikan proses pengambilan keputusan semakin kompleks. Konsumen tidak hanya mempertimbangkan harga, tetapi juga aspek lain seperti efisiensi bahan bakar, fitur kenyamanan, fitur keamanan, hingga nilai jual kembali. Oleh karena itu, pemilihan mobil merupakan salah satu bentuk masalah multikriteria yang tepat diselesaikan dengan bantuan Sistem Pendukung Keputusan (SPK). SPK mampu membantu konsumen dengan cara menyajikan data teknis mobil secara terstruktur dan memberikan rekomendasi berdasarkan preferensi yang dimasukkan oleh pengguna (Abdul Patahudin, 2022).
+2.3 Kriteria Pemilihan Mobil
+      Dalam pengembangan sistem pendukung keputusan (SPK) pemilihan mobil berbasis web, kriteria utama yang menjadi dasar evaluasi alternatif mobil adalah sebagai berikut:
+1. Harga Baru
+* Harga pembelian pertama yang tercantum di dealer resmi menjadi pertimbangan utama bagi konsumen Indonesia, karena sangat erat kaitannya dengan kemampuan finansial serta perencanaan anggaran keluarga atau usaha. Keakuratan data harga baru diperoleh dari website dealer resmi.
+2. Harga Jual Kembali
+* Harga jual kembali penting untuk dipertimbangkan, karena berdampak pada nilai investasi jangka panjang. Konsumen umumnya memilih mobil yang depresiasinya tidak terlalu tajam, sehingga bila sewaktu-waktu dijual kembali, kerugian ekonomi dapat diminimalisir.
+3. Fitur Keamanan
+* Fitur keamanan, seperti airbag, sistem pengereman ABS, dan sensor parkir menjadi kriteria wajib, khususnya untuk konsumen yang memprioritaskan keselamatan keluarga dan keamanan berkendara. Ketersediaan dan kelengkapan fitur ini menambah nilai jual dan citra positif pada produk otomotif.
+4. Fitur Kenyamanan
+* Kenyamanan mencakup AC, kualitas interior, sistem audio, ruang kabin, hingga teknologi pendukung seperti smart key atau panoramic roof. Konsumen Indonesia kini cenderung lebih selektif terhadap fitur pendukung pengalaman berkendara yang menyenangkan dan ergonomis.
+5. Jarak Tempuh Kendaraan
+* Jarak tempuh kendaraan menjadi kriteria krusial terutama di era harga BBM yang fluktuatif dan meningkatnya kesadaran masyarakat akan penghematan energi. Mobil dengan konsumsi BBM rendah dinilai lebih ramah lingkungan dan ekonomis dalam perawatan jangka panjang.
+6. Kapasitas Mesin
+* Kapasitas mesin atau engine displacement merupakan salah satu faktor penting yang berpengaruh terhadap performa kendaraan, efisiensi bahan bakar, serta besaran pajak tahunan di Indonesia. Konsumen umumnya mempertimbangkan kapasitas mesin sesuai kebutuhan penggunaan—misalnya, mesin kecil lebih cocok untuk penggunaan harian di perkotaan karena lebih irit BBM, sedangkan mesin berkapasitas besar lebih sesuai bagi konsumen yang membutuhkan tenaga lebih untuk perjalanan jauh atau membawa banyak penumpang. Oleh karena itu, kapasitas mesin menjadi kriteria relevan dalam membandingkan efektivitas dan kesesuaian kendaraan dengan kebutuhan pengguna.
+7. Pajak Kendaraan
+* Pajak kendaraan bermotor (PKB) merupakan biaya rutin yang wajib dibayar setiap tahun. Besarnya pajak dipengaruhi oleh nilai kendaraan dan kebijakan daerah. Dalam pemilihan mobil, biaya pajak menjadi pertimbangan finansial jangka panjang karena memengaruhi total biaya kepemilikan (total cost of ownership). Mobil dengan pajak lebih rendah cenderung menjadi pilihan konsumen yang menginginkan biaya operasional yang lebih ringan, terutama untuk pengguna dengan anggaran terbatas atau penggunaan harian.
+      Pemilihan tujuh kriteria di atas telah didasarkan pada hasil kuesioner dan diskusi dengan dosen pembimbing. Dalam sistem yang dibangun, bobot masing-masing kriteria dapat diatur secara dinamis oleh pengguna sesuai prioritas kebutuhan, sehingga proses seleksi dan perankingan mobil menjadi lebih personal serta akurat.
+2.4 Sumber dan Pengelolaan Data
+      Keberhasilan sistem pendukung keputusan (SPK) pemilihan mobil baru sangat dipengaruhi oleh kualitas data yang digunakan. Dalam penelitian ini, seluruh data alternatif mobil dikumpulkan secara langsung dari website resmi dealer mobil untuk menjamin keakuratan, keaslian, dan aktualitas informasi yang diolah. Setiap data yang diperoleh meliputi harga baru, proyeksi harga jual kembali, fitur keamanan dan kenyamanan, serta konsumsi bahan bakar masing-masing model kendaraan. Data-data ini diperoleh melalui pencatatan manual.
+      Pengelolaan data dalam sistem dilakukan melalui proses standarisasi dan validasi. Standarisasi bertujuan memastikan seluruh data kriteria terformat seragam dan mudah diproses secara numerik oleh sistem. Validasi data diperlukan untuk memastikan tidak ada duplikasi entri, atau kekeliruan angka. Proses ini penting agar hasil rekomendasi yang dihasilkan SPK benar-benar akurat dan sesuai kondisi pasar terbaru.
+2.5 Metode MABAC
+      Metode Multi-Attributive Border Approximation Area Comparison MABAC) adalah salah satu metode sistem pendukung keputusan (SPK) multikriteria yang dirancang untuk menentukan peringkat terbaik dari sejumlah alternatif berdasarkan jarak masing-masing alternatif terhadap area batas/perbatasan dari semua nilai kriteria yang diolah. MABAC dinilai mampu memberikan hasil perangkingan yang stabil, objektif, dan konsisten, serta mudah diimplementasikan untuk kasus dengan jumlah alternatif dan kriteria yang banyak, seperti pemilihan mobil baru berbasis web (Liza Safitri, 2023).
+      Secara prinsip, MABAC mengukur seberapa jauh atau dekat setiap alternatif terhadap “border approximation area” (zona batas referensi) yang dihitung dari sekumpulan data semua alternatif dan kriteria. Pendekatan ini memungkinkan evaluasi objektif karena tidak hanya tergantung pada nilai maksimum/minimum, melainkan hubungan relatif antara alternatif dengan area batas ideal.
+2.5.1 Perhitungan dan Langkah-Langkah Metode MABAC
+      Langkah-langkah dalam metode MABAC adalah sebagai berikut:
+1. Membuat Matriks Keputusan (X)
+ Matriks ini berisi nilai-nilai awal dari masing-masing alternatif terhadap semua kriteria.
+2. Normalisasi Matriks Keputusan (T)
+ Nilai-nilai pada matriks dinormalisasi berdasarkan jenis kriteria (benefit/cost). Rumus umum:
+? Untuk benefit:
+r_ij=  (x_ij- x_j^min)/(x_j^max- x_j^min ) ..................................................................(2.1)
+Nilai alternatif awal dikurangi dengan nilai alternatif minimum, kemudian nilai alternatif maksimum dikurangi dengan nilai alternatif minimum. Lalu kedua nilai tersebut dibagi sehingga menghasilkan nilai matriks keputusan untuk benefit.
+? Untuk cost:
+r_ij=  (x_j^max- x_ij)/(x_j^max- x_j^min ) ..................................................................(2.2)
+Nilai alternatif maksimum dikurangi dengan nilai alternatif awal, kemudian nilai alternatif maksimum dikurangi dengan nilai alternatif minimum. Lalu kedua nilai tersebut dibagi sehingga menghasilkan nilai matriks keputusan untuk cost.
+ Normalisasi matriks ini digunakan untuk menyeragamkan skala data agar semua kriteria berada pada rentang yang sama sehingga kriteria dapat dibandingkan secara adil.
+3. Membentuk Matriks Tertimbang (V)
+ Nilai normalisasi dikalikan dengan bobot dari masing-masing kriteria: v_ij= w_j  . r_ij ....................................................................................(2.3)
+Nilai bobot kriteria yang telah ditentukan dikali dengan nilai matriks keputusan sehingga menghasilkan nilai matriks tertimbang.
+ Matriks tertimbang digunakan untuk menunjukkan tingkat kepentingan tiap kriteria. Semakin penting kriteria tersebut, maka semakin besar pengaruhnya terhadap nilai akhir.
+4. Menentukan Matriks Area Batas (G)
+ Matriks ini berisi nilai rata-rata tertimbang dari setiap kriteria:
+B_j=  1/m  ?_(i=1)^m?v_ij  ..............................................................................(2.4)
+Setelah nilai matriks tertimbang diperoleh, nilai-nilai tersebut dirata-ratakan sehingga memperoleh nilai matriks area batas.
+ Langkah ini digunakan untuk menghasilkan nilai rata-rata tertimbang dari semua alternatif pada setiap kriteria. Serta menjadi batas pembanding untuk menilai apakah suatu alternatif lebih baik atau lebih buruk dari rata-rata.
+5. Menghitung Matriks Kedekatan (Q)
+ Matriks ini diperoleh dengan mengurangi nilai v terhadap g:
+Q_ij= v_ij- B_j.................................................................................(2.5)
+Nilai matriks tertimbang dikurangi dengan nilai matriks area batas sehingga menghasilkan nilai matriks kedekatan.
+  Langkah ini berfungsi sebagai pengukur selisih antar nilai tertimbang suatu alternatif dengan nilai batas atau rata-rata. Serta menentukan nilai alternatif tersebut bernilai di atas (positif) atau di bawah (negatif).
+6. Menghitung Nilai Total Tiap Alternatif (S)
+ Nilai preferensi akhir dihitung dari penjumlahan seluruh nilai kedekatan per alternatif:
+S_i= ?_(j=1)^n?Q_ij  ..................................................................................(2.6)
+Pada langkah terakhir, nilai matriks kedekatan atau yang bisa disebut sebagai selisih Q_ij dijumlahkan menjadi nilai total atau skor akhir.
+  Langkah ini digunakan untuk menentukan urutan prioritas atau rekomendasi berdasarkan nilai S_i tertinggi.
+2.5.2 Perbandingan Metode MABAC Dengan Metode SPK Lainnya
+      SAW (Simple Additive Weighting), TOPSIS (Technique for Order Preference by Similarity to Ideal Solution), dan AHP (Analytical Hierarchy Process) adalah metode multikriteria yang juga sering digunakan dalam sistem pengambilan keputusan. Secara umum metode-metode tersebut memiliki ciri sebagai berikut:
+? SAW: Sederhana dan intuitif, cocok untuk data homogen, tapi kurang sensitif pada data ekstrim dan tidak menyediakan referensi jarak/kedekatan ideal.
+? TOPSIS: Menentukan solusi terbaik berdasarkan kedekatan dengan solusi ideal positif dan negatif, namun normalisasi dan perhitungan relatif rumit untuk data besar.
+? AHP: Unggul dalam hierarchical weighting dan konsistensi pembobotan, tetapi kurang efisien jika jumlah alternatif sangat banyak karena memerlukan perbandingan berpasangan yang kompleks.
+Sementara MABAC unggul dikarenakan:
+? Proses perhitungan matematis yang relatif lebih sederhana, terutama pada tahap penentuan zona batas.
+? Perangkingan yang tetap objektif dan konsisten meskipun jumlah alternatif dan kriteria cukup banyak.
+? Hasil ranking yang cenderung stabil dan mudah dikorelasikan dengan hasil dari metode lain seperti SAW dan AHP.
+2.5.3 Kelebihan dan Kekurangan Metode MABAC
+      Kelebihan :
+? Membantu menghasilkan ranking yang stabil dan konsisten diberbagai kasus multikriteria.
+? Mudah diotomatisasi dan diterapkan pada aplikasi berbasis web.
+? Tidak terlalu sensitif terhadap perubahan skala data dan bobot kriteria.
+? Proses perhitungan logis dan intuitif, mudah dipahami pengguna maupun pengembang sistem.
+? Tidak bergantung pada nilai maksimal atau minimal ekstrim, sehingga cocok untuk data yang bervariasi luas.
+      Kekurangan :
+? Ketelitian hasil sangat bergantung pada kualitas proses normalisasi dan validitas bobot kriteria.
+? Kurang cocok untuk data yang memiliki hubungan antar-kriteria yang sangat kompleks atau tidak linier.
+? Membutuhkan tahapan perhitungan manual atau otomasi aplikasi yang benar-benar sistematis agar tidak terjadi kesalahan komputasi pada jumlah data dan kriteria yang besar.
+? Pada konteks tertentu, hasilnya bisa sangat mirip dengan SAW/AHP sehingga tidak selalu memberikan keunikan mutlak dalam hasil peringkat.
+2.6 Sistem Berbasis Web
+      Sistem pendukung keputusan pemilihan mobil baru pada penelitian ini dirancang menggunakan platform berbasis web. Sistem web dipilih agar dapat diakses dengan mudah oleh seluruh calon pembeli di berbagai wilayah Indonesia, tanpa terbatas waktu maupun perangkat. Melalui sistem ini, pengguna dapat memasukkan preferensi atau bobot kriteria secara langsung, melakukan komparasi data antar mobil terbaru dari dealer resmi, serta mendapatkan hasil rekomendasi secara instan dan transparan. Tampilan antarmuka dirancang user-friendly agar semua kalangan masyarakat dapat mengoperasikan sistem dengan nyaman.
+      Sistem web ini memproses data seluruh alternatif mobil, baik harga baru, harga jual kembali, fitur keamanan, kenyamanan, hingga konsumsi BBM, secara real-time. Setiap hasil rekomendasi dapat diakses secara nasional sehingga memperluas jangkauan manfaat dan tingkat kemudahan konsumen dalam mengambil keputusan pembelian yang berbasis data aktual serta objektif.
+2.6.1 Keunggulan Menggunakan Website
+      Pengembangan sistem dalam bentuk web memiliki beberapa keunggulan utama dibandingkan aplikasi desktop atau mobile, yaitu:
+? Aksesibilitas Nasional : Pengguna dapat mengakses sistem kapan saja dan di mana saja selama terhubung ke internet, baik melalui PC, laptop, maupun perangkat mobile, sehingga jangkauan penggunaan sangat luas.
+? Tidak Membutuhkan Instalasi : Sistem langsung digunakan melalui browser tanpa proses pemasangan aplikasi tambahan; hal ini sangat memudahkan terutama bagi pengguna awam.
+? Pemeliharaan dan Pembaruan Mudah : Pengelola dapat memperbarui data mobil, fitur atau algoritma secara terpusat, sehingga seluruh pengguna otomatis mendapatkan versi dan informasi terbaru.
+
+BAB 3
+ANALISIS DAN PERANCANGAN SISTEM
+3.1 	Analisa Sistem
+      Analisis sistem dilakukan untuk memahami kebutuhan pengguna, sumber data, dan batasan sistem yang akan dibangun. Proses ini membantu memastikan bahwa pengembangan sistem dapat berjalan sesuai dengan tujuan penelitian, yaitu membangun Sistem Pendukung Keputusan (SPK) berbasis metode MABAC untuk membantu konsumen memilih mobil sesuai kriteria yang diinginkan.
+3.1.1 	Tujuan Analisa Sistem
+      Tujuan dari analisis sistem ini adalah:
+1. Mengidentifikasi kebutuhan data dan informasi yang dibutuhkan untuk proses perhitungan metode MABAC.
+2. Menentukan fungsi utama sistem website yang dapat mendukung proses pengambilan keputusan.
+3. Memetakan alur interaksi antara pengguna (User) dan pengelola data (Admin).
+4. Menentukan ruang lingkup dan batasan sistem.
+3.1.2 	Kebutuhan Data
+      Sistem membutuhkan data spesifikasi mobil yang bersumber dari:
+? Website GAIKINDO: data perilisan mobil selama 5 tahun terakhir.
+? Website resmi dealer mobil: data harga baru, harga jual kembali, fitur keamanan, fitur kenyamanan, dan konsumsi BBM.
+? Data terakhir dikumpulkan pada Juni 2025.
+3.1.3 	Batasan Sistem
+1. Sistem berbasis website, dapat diakses melalui peramban.
+2. Data terbatas pada enam merek mobil: Toyota, Daihatsu, Hyundai, Honda, Suzuki, dan Wuling.
+3. Target pengguna: konsumen umum yang ingin membeli mobil.
+3.2 	Metode MABAC
+      Metode MABAC digunakan untuk memberikan perangkingan alternatif mobil berdasarkan kriteria yang dipilih pengguna.
+3.2.1 Proses Pengumpulan Data
+? Mengambil data dari GAIKINDO terkait perilisan mobil.
+? Mengambil data spesifikasi mobil dari website resmi dealer.
+? Memasukkan data ke database sistem.
+3.2.2 Flowchart Metode MABAC
+      Flowchart ini menjelaskan alur proses perhitungan MABAC dari input data hingga menghasilkan output hasil akhir.
+      
+Gambar 3.1 Flowchart Metode MABAC 2
+Penjelasan Flowchart Metode MABAC:
+1. Mulai
+Langkah awal untuk memulai proses pengambilan keputusan untuk menentukan alternatif terbaik berdasarkan sejumlah kriteria yang telah ditentukan.
+2. Input Data (Alternatif dan Kriteria dengan Bobot)
+Pada tahap ini, user memasukkan data yang digunakan dalam perhitungan, meliputi:
+* Alternatif yang akan dievaluasi,
+* Kriteria penilaian, serta
+* Bobot untuk setiap kriteria, yang menggambarkan tingkat kepentingannya.
+Tahap ini menghasilkan matriks keputusan awal yang menjadi dasar proses perhitungan.
+3. Normalisasi Matriks Keputusan (r_ij)
+Data pada setiap kriteria umumnya memiliki satuan dan skala berbeda (misalnya harga dalam juta rupiah, konsumsi dalam km/l).
+Agar dapat dibandingkan secara adil, dilakukan proses normalisasi untuk menstandarkan seluruh nilai ke dalam rentang 1–5.
+Langkah ini juga mempertimbangkan jenis kriteria:
+* Benefit (semakin besar semakin baik),
+* Cost (semakin kecil semakin baik).
+Hasil tahap ini adalah matriks normalisasi (Rij).
+4. Hitung Matriks Tertimbang (v_ij)
+Setelah data ternormalisasi, setiap nilai normalisasi dikalikan dengan bobot kriteria yang bersesuaian. Proses ini menghasilkan matriks tertimbang, yang menunjukkan kontribusi relatif tiap kriteria terhadap masing-masing alternatif. Langkah ini penting untuk menyesuaikan hasil dengan tingkat kepentingan kriteria.
+5. Hitung Matriks Area Batas (G)
+Tahap ini menghitung nilai rata-rata tertimbang dari setiap kriteria, yang disebut sebagai Zona Batas (Border Approximation Area). Zona batas berfungsi sebagai nilai pembanding untuk menentukan apakah suatu alternatif berada di atas atau di bawah rata-rata pada tiap kriteria. Nilai ini dihitung dengan mengambil rata-rata dari kolom matriks tertimbang.
+6. Hitung Jarak Alternatif terhadap Area Batas (Q_ij)
+Langkah ini menghitung selisih antara nilai tertimbang setiap alternatif dengan nilai zona batas pada kriteria yang sama. Nilai Q_ij dapat positif (di atas rata-rata) atau negatif (di bawah rata-rata).
+Tahap ini menghasilkan matriks jarak (Q).
+7. Hitung Nilai Q_i untuk Setiap Alternatif
+Semua nilai Q_ij dijumlahkan untuk setiap alternatif guna memperoleh skor total atau nilai S_i. Nilai S_i inilah yang menunjukkan tingkat kinerja keseluruhan suatu alternatif dibandingkan alternatif lainnya.
+8. Peringkat Alternatif
+Alternatif kemudian diurutkan berdasarkan nilai S_i dari yang terbesar ke terkecil. Alternatif dengan nilai S_i tertinggi dianggap memiliki performa terbaik secara keseluruhan.
+9. Hasil Akhir: Alternatif Terbaik
+Langkah terakhir adalah menampilkan hasil akhir berupa alternatif terbaik yang memiliki nilai total tertinggi. Tahap ini memberikan rekomendasi akhir dari sistem pendukung keputusan berdasarkan hasil perhitungan metode MABAC.
+10. Selesai
+Proses pengambilan keputusan berakhir setelah alternatif terbaik diperoleh. Hasil ini dapat digunakan sebagai dasar rekomendasi atau bahan pertimbangan selanjutnya.
+3.2.3 	Penentuan Kriteria
+      Pada penelitian ini, penentuan kriteria awal dilakukan melalui penyebaran kuesioner kepada responden. Kuesioner tersebut berisi 16 pertanyaan yang digunakan untuk menentukan kriteria yang akan digunakan. Sedangkan untuk respondennya berjumlah 51 responden dari kalangan umum. Setelah itu dilakukan  analisis hasil kuesioner yang mana didapati bahwa kriteria harga baru menempati posisi tertinggi sebagai faktor paling berpengaruh dalam pengambilan keputusan pembelian mobil, diikuti oleh kriteria tahun, fitur kenyamanan, fitur keamanan, merk, dan konsumsi bahan bakar. Dengan demikian, hasil dari kuesioner dapat dijadikan sebagai dasar dalam proses penentuan kriteria. Berikut adalah hasil responden dari kuesioner:
+Tabel 3.1
+Hasil Responden
+PeringkatKriteriaTotal Responden yang Memilih ‘Ya’1Harga512Tahun503Fitur Kenyamanan494Fitur keamanan495Merk486Konsumsi BBM487Kapasitas Mesin478Transmisi469Jenis BBM4610Warna4511Interior4512Kapasitas Mobil4413Suku Cadang4114Kapasitas BBM4015Lokasi Bengkel30
+	Selain kriteria pilihan di atas, beberapa responden juga menambahkan kriteria tambahan yang juga menjadi acuan dalam pembahasan diskusi dengan dosen pembimbing. 
+
+
+Tabel 3.2
+Hasil Responden Kriteria Tambahan
+PeringkatKriteria TambahanTotal Responden yang Memberi Masukan Kriteria Tambahan1Bonus/Cashback/Promo92Harga Jual Kembali73Layanan Purna Jual64Perawatan65Garansi56Asuransi27Test Drive18Kelengkapan Fisik1
+
+
+
+
+
+      
+      Dari hasil pengisian kuesioner penulis mengambil 7 kriteria yang akan menjadi dasar dari sistem pendukung keputusan ini. Kriteria-kriteria tersebut adalah: 
+1. Harga Baru,
+2. Harga Jual Kembali,
+3. Fitur Keamanan,
+4. Fitur Kenyamanan,
+5. Jarak Tempuh Kendaraan,
+6. Kapasitas Mesin, dan
+7. Pajak Kendaraan.
+      Penentuan kriteria ini adalah hasil dari diskusi dengan dosen pembimbing dengan mempertimbangkan pengaruhnya untuk masyarakat dan nilai dari kriteria-kriteria tersebut. Selain itu, kriteria dipilih karena relevan dengan kebutuhan konsumen dalam proses pemilihan mobil baru, mudah diperoleh datanya dari sumber resmi, serta dapat mewakili faktor finansial, teknis, maupun kenyamanan. Dengan demikian, kriteria yang ditetapkan diharapkan mampu memberikan gambaran yang komprehensif dalam proses pengambilan keputusan.
+3.2.5 Alternatif
+      Pada tahap awal, data alternatif dikumpulkan dari situs resmi dealer mobil dan sumber GAIKINDO yang memuat perilisan mobil terbaru periode 2020–2025. Berdasarkan hasil pengumpulan data, terdapat 6 merk mobil dengan total 38 jenis dan 6 tipe mobil sebagai kandidat alternatif. Rincian jumlah alternatif per merk ditunjukkan pada Tabel 3.3 dan Tabel 3.4 berikut:
+Tabel 3.3
+Rincian Jumlah Alternatif
+NoMerkJumlah1Toyota72Daihatsu53Hyundai64Honda75Suzuki76wuling6Jumlah Total38
+Table 3.4
+Rincian Jumlah Tipe Mobil
+NoTipeJumlah Mobil1City Car62Sedan23MPV104Compact Suv115Premium SUV76Electric Car4
+      Jumlah alternatif yang cukup banyak ini mencerminkan kompleksitas dalam pengambilan keputusan konsumen ketika memilih mobil baru. Oleh karena itu, sistem yang dibangun diharapkan dapat membantu pengguna dalam menyaring pilihan sesuai kebutuhan dan preferensi mereka.
+3.2.6 Studi Kasus
+      Untuk menggambarkan penerapan metode MABAC secara jelas dan terstruktur, penelitian ini menggunakan 5 alternatif mobil sebagai studi kasus. Mobil yang dipilih mempertimbangkan keragaman merek, rentang harga, tipe dan segmen pasar, sehingga dapat mewakili kondisi nyata dalam proses pemilihan mobil baru oleh konsumen.
+      Adapun kelima alternatif dan lima kriteria beserta bobotnya yang dimisalkan user menentukan bobotnya menjadi bervariasi. Berikut adalah tabel yang akan digunakan dalam studi kasus ini:
+
+Tabel 3.5
+Kode dan Nama Alternatif
+NoKode AlternatifNama AlternatifTipe1A1Toyota Raize 2021Compact SUV2A2Hyundai Creta 2021Compact SUV3A3Honda HR-V 2022Compact SUV4A4Daihatsu Rocky 2021Compact SUV5A5Toyota Yaris Cross 2023Compact SUV
+Alternatif yang digunakan pada studi kasus ini terdiri dari lima model mobil dari segmen Compact SUV, yaitu: Toyota Raize 2021, Hyundai Creta 2021, Honda HR-V 2022, Daihatsu Rocky 2021, dan Toyota Yaris Cross 2023. Pemilihan kelima alternatif tersebut didasarkan pada beberapa pertimbangan berikut:
+1. Segmen yang paling diminati masyarakat Indonesia saat ini.
+Mobil dalam segmen ini menawarkan kombinasi nilai yang sangat relevan bagi pengguna umum, yakni ground clearance tinggi, desain modern, efisiensi bahan bakar, serta kapasitas kabin yang memadai untuk keluarga kecil. Dengan demikian, memilih segmen ini membuat studi kasus lebih realistis dan sesuai kebutuhan pasar.
+2. Masing-masing alternatif mewakili merk yang berbeda.
+Dengan memilih lima mobil dari lima merek utama (Toyota, Hyundai, Honda, Daihatsu), studi kasus menjadi lebih objektif dan tidak bias terhadap satu merek tertentu. Ini juga mencerminkan variasi pilihan nyata yang tersedia bagi calon pembeli.
+Tabel 3.6
+Kode, Tipe, dan Bobot Kriteria
+No.Kode KriteriaKriteriaTipe KriteriaBobotKeterangan1K1Harga BaruCost0,22Semakin rendah harga mobil maka semakin baik.2K2Harga Jual 
+KembaliBenefit0,14Semakin tinggi harga jual kembali maka semakin baik.3K3Fitur KeamananBenefit0,16Semakin banyak fitur maka semakin baik.4K4Fitur KenyamananBenefit0,08Semakin banyak fitur maka semakin baik.5K5Jarak Tempuh KendaraanBenefit0,18Semakin tinggi jarak tempuh per liternya maka semakin baik.6K6Kapasitas MesinCost0,12Semakin rendah kapasitas mesin maka semakin baik7K7Pajak KendaraanCost0,1Semakin rendah pajak maka semakin baik
+      Berikut adalah ringkasan yang berisikan detail nilai kriteria dari masing-masing alternatif:
+1. Toyota Raize 2021: 
+* Harga Baru: Rp 278.000.000
+* Harga Jual Kembali: Rp 225.000.000
+* F. Keamanan: 1. Toyota Safety Sense (TSS) 2. Pre-Collision System (PCS) 3. Adaptive Cruise Control (ACC) 4. Lane Departure Alert (LDA) with Steering Control 5. 6 Airbags (Depan, Samping, Tirai) 6. Blind Spot Monitor (BSM) 7. Rear Cross-Traffic Alert (RCTA) 8. Vehicle Stability Control (VSC) 9. Hill Start Assist (HSA) 10. Kamera Mundur & Sensor Parkir.
+* F. Kenyamanan: 1. 9-inch Floating Head Unit 2. Apple CarPlay & Android Auto 3. 7-inch TFT Digital Meter Cluster 4. Push Start/Stop Button 5. Smart Key System 6. Auto Climate Control (AC Digital) 7. Paddle Shifters 8. Power Mode Button 9. Fabric-Leather Combination Seat 10. Front Soft-touch Armrest 11. Electric Retractable Mirror.
+* Jarak Tempuh: 16 Km/l.
+* Kapasitas Mesin: 1.000cc
+* Pajak Kendaraan: Rp 4.591.000
+2. Hyundai Creta 2021:
+* Harga Baru: Rp 370.500.000
+* Harga Jual Kembali: Rp 255.000.000
+* F. Keamanan: 1. Hyundai SmartSense (ADAS) 2. Forward Collision-Avoidance Assist (FCA) 3. Lane Keeping Assist (LKA) 4. Lane Following Assist (LFA) 5. Blind-spot Collision-Avoidance Assist (BCA) 6. Rear Cross-traffic Collision-Avoidance Assist (RCCA) 7. 6 Airbags 8. Electronic Stability Control (ESC) 9. Hill Start Assist (HSA) 10. Kamera Mundur 11. Driver Attention Warning (DAW).
+* F. Kenyamanan: 1. 8-inch Touchscreen Head Unit 2. Apple CarPlay & Android Auto 3. 10.25-inch Full Digital Cluster 4. Panoramic Sunroof 5. Bose Premium Audio System 6. Push Start/Stop Button 7. Smart Key System 8. Auto Climate Control 9. Wireless Charger 10. Ventilated Front Seats (Pendingin Jok) 11. Ambient Mood Lighting 12. Air Purifier 13. Cruise Control 14. BlueLink Connected Car Service.
+* Jarak Tempuh: 16 Km/l.
+* Kapasitas Mesin: 1.500cc
+* Pajak Kendaraan: Rp 6.071.000
+3. Honda HR-V 2022:
+* Harga Baru: Rp 452.000.000
+* Harga Jual Kembali: Rp 355.000.000
+* F. Keamanan: 1. Honda SENSING 2. Collision Mitigation Brake System (CMBS) 3. Adaptive Cruise Control (ACC) with Low-Speed Follow 4. Lane Keeping Assist System (LKAS) 5. Road Departure Mitigation (RDM) 6. Auto-High Beam 7. Honda LaneWatch 8. 6 Airbags 9. Vehicle Stability Assist (VSA) 10. Hill Start Assist (HSA) 11. Hill Descent Control (HDC) 12. Electric Parking Brake (EPB) 13. Auto Brake Hold.
+* F. Kenyamanan: 1. 8-inch Floating Touchscreen Head Unit 2. Apple CarPlay & Android Auto 3. 7-inch TFT Digital Meter Cluster 4. Panoramic Glass Roof 5. Push Start/Stop Button 6. Smart Entry System 7. Dual-Zone Auto Climate Control 8. Leather-Trimmed Seat (RS) 9. Hands-Free Power Tailgate 10. Ambient Mood Lighting 11. Remote Engine Start 12. Paddle Shifters 13. 3-Mode Drive System (Sport, Normal, Econ).
+* Jarak Tempuh: 15 Km/l.
+* Kapasitas Mesin: 1.500cc
+* Pajak Kendaraan: Rp 7.375.000
+4. Daihatsu Rocky 2021:
+* Harga Baru: Rp 252.000.000
+* Harga Jual Kembali: Rp 195.000.000
+* F. Keamanan: 1. Daihatsu A.S.A (Advanced Safety Assist) 2. Pre-Collision Control 3. Lane Departure Warning & Prevention 4. 6 Airbags (Depan, Samping, Tirai) 5. Blind Spot Monitor (BSM) 6. Rear Cross-Traffic Alert (RCTA) 7. Vehicle Stability Control (VSC) 8. Hill Start Assist (HSA) 9. Kamera Mundur & Sensor Parkir (Depan-Belakang).
+* F. Kenyamanan: 1. 9-inch Floating Head Unit 2. Apple CarPlay & Android Auto 3. 7-inch TFT Digital Meter Cluster 4. Push Start/Stop Button 5. Smart Key System 6. Auto Climate Control (AC Digital) 7. Power Mode Button (di Setir) 8. Fabric-Leather Combination Seat 9. Front Soft-touch Armrest 10. Electric Retractable Mirror.
+* Jarak Tempuh: 17 Km/l.
+* Kapasitas Mesin: 1.000cc
+* Pajak Kendaraan: Rp 4.175.000
+4. Toyota Yaris Cross 2023:
+* Harga Baru: Rp 403.000.000
+* Harga Jual Kembali: Rp 325.000.000
+* F. Keamanan: 1. Toyota Safety Sense (TSS) 2. Pre-Collision System (PCS) 3. Dynamic Radar Cruise Control (DRCC) 4. Lane Keeping Control (LKC) 5. 6 Airbags 6. Panoramic View Monitor (Kamera 360) 7. Blind Spot Monitor (BSM) 8. Rear Cross-Traffic Alert (RCTA) 9. Vehicle Stability Control (VSC) 10. Hill Start Assist (HSA) 11. Electric Parking Brake (EPB) 12. Auto Brake Hold.
+* F. Kenyamanan: 1. 10.1-inch Floating Head Unit 2. Wireless Apple CarPlay & Android Auto 3. 7-inch TFT Digital Meter Cluster 4. Panoramic Glass Roof with Power Sunshade 5. Power Back Door with Kick Sensor 6. Push Start/Stop Button & Smart Key 7. Auto Climate Control (AC Digital) 8. Synthetic Leather Seat (GR Sport) 9. Wireless Charger 10. Ambient Lighting 11. Power Adjustable Driver Seat 12. Electric Retractable Mirror.
+* Jarak Tempuh: 27 Km/l.
+* Kapasitas Mesin: 1.500cc
+* Pajak Kendaraan: Rp 6.591.000
+      Data-data tersebut kemudian dimasukkan ke dalam tabel sehingga dapat diperoleh data sebagai berikut:
+Tabel 3.7
+Data-Data Alternatif dan Kriteria
+Kode AlternatifK1 (Satuan Ratus Juta)K2 (Satuan Ratus Juta)K3 (Satuan Jumlah Fitur)K4 (Satuan Jumlah Fitur)K5 (Satuan Km/l)K6 (Satuan CC)K7 (Satuan Juta)A12782251011161.0004,591A23712551114161.5006,071A34523551313151.5007,375A4252195910171.0004,175A54033251212271.5006,591N. Max4523551314271.5007,375N. Min252195910151.0004,175
+1. Normalisasi Nilai Min-Max
+Setelah didapati nilai dari masing-masing kriteria, nilai-nilai tersebut dikonversikan menjadi nilai alternatif dengan rumus min-max normalization, rumus ini diawali dengan menentukan cost dan benefit dari kriteria yang sudah ditentukan. Setelah itu mencari nilai tertinggi dan terendah dari setiap kriteria yang kemudian dihitung dan dilakukan konversi ke skala 1 – 5 dengan rumus t_ij=  (x_j^max- x_ij)/(x_j^max- x_j^min )  x 4+1 untuk cost, dan t_ij=  (x_ij- x_j^min)/(x_j^max- x_j^min )  x 4+1 untuk benefit. 
+Alternatif 1 (A1):
+t1,1=  (452-278)/(452-252) x 4+1= 4,5 (Cost)
+t1,2=  (225-195)/(355-195)  x 4+1=1,8 (Benefit)
+t1,3=(10-9)/(13-9)  x 4+1=2 (Benefit)
+t1,4=  (11-10)/(14-10)  x 4+1=2 (Benefit)
+t1,5=  (16-15)/(27-15)  x 4+1=1,3 (Benefit)
+t1,6=  (1.500-1.000)/(1.500-1.000) x 4+1= 5 (Cost)
+t1,7=  (7.375-4.591)/(7.375-4.175) x 4+1= 4,5 (Cost)
+Alternatif 2 (A2):
+t2,1=(452-371)/(452-252)  x 4+1=2,6 (Cost)
+t2,2=  (255-195)/(355-195)  x 4+1=2,5 (Benefit)
+t2,3=  (11-9)/(13-9) x 4+1=3 (Benefit)
+t2,4=  (14-10)/(14-10)  x 4+1=5 (Benefit)
+t2,5=  (16-15)/(27-15)  x 4+1=1,3 (Benefit)
+t2,6=  (1.500-1.500)/(1.500-1.000) x 4+1= 1 (Cost)
+t2,7=  (7.375-6.071)/(7.375-4.175) x 4+1= 2,6 (Cost)
+Alternatif 3 (A3):
+t3,1=  (452-452)/(452-252)  x 4+1=1 (Cost)
+t3,2=  (355-195)/(355-195)  x 4+1=5 (Benefit)
+t3,3=  (13-9)/(13-9)  x 4+1=5 (Benefit)
+t3,4=  (13-10)/(14-10)  x 4+1=4 (Benefit)
+t3,5=  (15-15)/(27-15)=x 4+1=1 (Benefit)
+t3,6=  (1.500-1.500)/(1.500-1.000) x 4+1= 1 (Cost)
+t3,7=  (7.375-7.375)/(7.375-4.175) x 4+1= 1 (Cost)
+Alternatif 4 (A4):
+t4,1=  (452-252)/(452-252)  x 4+1=5 (Cost)
+t4,2=  (195-195)/(355-195)  x 4+1=1 (Benefit)
+t4,3=  (9-9)/(13-9)  x 4+1=1 (Benefit)
+t4,4=  (10-10)/(14-10)  x 4+1=1 (Benefit)
+t4,5=  (17-15)/(27-15)  x 4+1=1,7 (Benefit)
+t4,6=  (1.500-1.000)/(1.500-1.000) x 4+1= 5 (Cost)
+t4,7=  (7.375-4.175)/(7.375-4.175) x 4+1= 5 (Cost)
+Alternatif 5 (A5):
+t5,1=  (452-403)/(452-252) x 4+1=2 (Cost)
+t5,2=  (325-195)/(355-195)  x 4+1=4,3 (Benefit)
+t5,3=  (12-9)/(13-9)  x 4+1=4 (Benefit)
+t5,4=  (12-10)/(14-10)  x 4+1=3 (Benefit)
+t5,5=  (27-15)/(27-15)  x 4+1=5 (Benefit)
+t5,6=  (1.500-1.500)/(1.500-1.000) x 4+1= 1 (Cost)
+t5,7=  (7.375-6.591)/(7.375-4.175) x 4+1= 2 (Cost)
+      Dari perhitungan normalisasi di atas menghasilkan nilai sebagai berikut:
+
+Tabel 3.8
+Hasil Normalisasi
+AlternatifK1K2K3K4K5K6K7A14,51,82,02,01,35,04,5A22,62,53,05,01,31,02,6A31,05,05,04,01,01,01,0A45,01,01,01,01,75,05,0A52,04,34,03,05,01,02,0
+2. Matriks Tertimbang
+Pada langkah ini nilai yang sudah dinormalisasi kemudian dikali dengan bobot kriteria. Pada kasus ini, bobot kriteria adalah sebagai berikut:
+C1: 0,22
+C2: 0,14
+C3: 0,16
+C4: 0,08
+C5: 0,18
+C6: 0,12
+C7: 0,1
+Alternatif 1 (A1):
+v1,1=0,22 x 4,5=1
+v1,2=0,14 x 1,8=0,2
+v1,3=0,16 x 2= 0,3
+v1,4=0,08 x 2= 0,2
+v1,5=0,18 x 1,3= 0,2
+v1,6=0,12 x 5=0,6
+v1,7=0,1 x 4,5=0,4
+Alternatif 2 (A2):
+v2,1=0,22 x 2,6=0,6
+v2,2=0,14 x 2,5=0,4
+v2,3=0,16 x 3=0,5
+v2,4=0,08 x 5=0,4
+v2,5=0,18 x 1,3=0,2
+v2,6=0,12 x 1=0,1
+v2,7=0,1 x 2,6=0,3
+Alternatif 3 (A3):
+v3,1=0,22 x 1=0,2
+v3,2=0,14 x 5=0,7
+v3,3=0,16 x 5=0,8
+v3,4=0,08 x 4=0,3
+v3,5=0,18 x 1=0,2
+v3,6=0,12 x 1=0,1
+v3,7=0,1 x 1=0,1
+Alternatif 4 (A4):
+v4,1=0,22 x 5=1,1
+v4,2=0,14 x 1=0,1
+v4,3=0,16 x 1=0,2
+v4,4=0,08 x 1=0,1
+v4,5=0,18 x 1,7=0,3
+v4,6=0,12 x 5=0,6
+v4,7=0,1 x 5=0,5
+Alternatif 5 (A5):
+v5,1=0,22 x 2=0,4
+v5,2=0,14 x 4,3=0,6
+v5,3=0,16 x 4=0,6
+v5,4=0,08 x 3=0,2
+v5,5=0,18 x 5=0,9
+v5,6=0,12 x 1=0,1
+v5,7=0,1 x 2=0,2
+Dari perhitungan di atas, maka diperoleh nilai matriks tertimbang sebagai berikut:
+Tabel 3.9
+Nilai Matriks Tertimbang
+Alter.K1K2K3K4K5K6K7A11,00,20,30,20,20,60,4A20,60,40,50,40,20,10,3A30,20,70,80,30,20,10,1A41,10,10,20,10,30,60,5A50,40,60,60,20,90,10,2
+3. Matriks Area Batas
+Langkah ini digunakan untuk menentukan nilai rata-rata tertimbang dari setiap kriteria yang mana B_j adalah garis pemisah untuk menentukan suatu alternatif bisa jadi lebih baik atau lebih buruk dari standar tengah. Kriteria 1 (K1):
+B_j=((1,0+0,6+0,2+1,1+0,4))/5=0,66
+Kriteria 2 (K2):
+B_j=((0,2+0,4+0,7+0,1+0,6))/5=0,41
+Kriteria 3 (K3):
+B_j=((0,3+0,5+0,8+0,2+0,6))/5=0,48
+Kriteria 4 (K4):
+B_j=((0,2+0,4+0,3+0,1+0,2))/5=0,24
+Kriteria 5 (K5):
+B_j=((0,2+0,2+0,2+0,3+0,9))/5=0,37
+Kriteria 6 (K6):
+B_j=((0,6+0,1+0,1+0,6+0,1))/5=0,31
+Kriteria 7 (K7):
+B_j=((0,4+0,3+0,1+0,5+0,2))/5=0,30
+Setelah semua kriteria dihitung, maka diperoleh nilai rata-ratanya sebagai berikut:
+Tabel 3.10
+Nilai Matriks Area Batas
+KriteriaBjK10,66K20,41K30,48K40,24K50,37K60,31K70,30
+4. Matriks Q
+Matriks Q atau selisih zona batas digunakan untuk mengukur seberapa jauh tiap alternatif di atas atau di bawah rata-rata yang mana kalau nilai Q_ij > 0 maka alternatif tersebut lebih unggul di kriteria tersebut, begitu pula sebaliknya. Untuk memperoleh nilai Matriks Q adalah nilai matriks tertimbang (V) dikurangi dengan matriks area batas (Bj).
+Alternatif 1 (A1):
+Q1,1=1,0-0,66=0,32
+Q1,2=0.2-0,41=-0,16
+Q1,3=0,3-0,48=0,16
+Q1,4=0,2-0,24=-0,08
+Q1,5=0,2-0,37=-0,13
+Q1,6=0,6-0,31=0,29
+Q1,7=0,4-0,30=0,15
+Alternatif 2 (A2):
+Q2,1=0,6-0,66=-0,09
+Q2,2=0,4-0,41=-0,06
+Q2,3=0,5-0,48=0,0
+Q2,4=0,4-0,24=0,16
+Q2,5=0,2-0,37=-0,13
+Q2,6=0,1-0,31=-0,19
+Q2,7=0,3-0,30=-0,04
+Alternatif 3 (A3):
+Q3,1=0,2-0,66=-0,44
+Q3,2=0,7-0,41=0,29
+Q3,3=0,8-0,48=0,32
+Q3,4=0,3-0,24=0,08
+Q3,5=0,2-0,37=-0,19
+Q3,6=0,1-0,31=-0,19
+Q3,7=0,1-0,30=-0,20
+Alternatif 4 (A4):
+Q4,1=1,1-0,66=0,44
+Q4,2=0,1-0,41=-0,27
+Q4,3=0,2-0,48=-0,32
+Q4,4=0,1-0,24=-0,16
+Q4,5=0,3-0,37=-0,07
+Q4,6=0,6-0,31=0,29
+Q4,7=0,5-0,30=0,20
+Alternatif 5 (A5):
+Q5,1=0,4-0,66=-0,23
+Q5,2=0,6-0,41=0,19
+Q5,3=0,6-0,48=0,16
+Q5,4=0,2-0,24=0,0
+Q5,5=0,9-0,37=0,53
+Q5,6=0,1-0,31=-0,19
+Q5,7=0,2-0,30=-0,10
+Dari perhitungan di atas, maka diperoleh nilai Matriks Q atau selisih zona sebagai berikut:
+Tabel 3.11
+Nilai Matriks Q
+Alter.K1K2K3K4K5K6K7A10,32-0,16-0,16-0,08-0,130,290,15A2-0,09-0,060,000,16-0,13-0,19-0,04A3-0,440,290,320,08-0,19-0,19-0,20A40,44-0,27-0,32-0,16-0,070,290,20A5-0,230,190,160,000,53-0,19-0,10
+5. Skor Akhir
+Pada langkah, ini seluruh selisih kriteria dijumlahkan seluruhnya yang kemudian menghasilkan skor total tiap alternatif. Setelah skor akhir diperoleh maka dilakukan perankingan oleh tiap alternatif. Alternatif yang memiliki skor paling besar dianggap sebagai pilihan terbaik karena memiliki keunggulan di atas rata-rata pada tiap kriterianya.
+S1=0,32+(-0,16)+(-0,16)+(-0,08)+(-0,13)+0,29+0,15=0,22
+S2=-0,09+(-0,06)+0+0,16+(-0,13)+(-0,19)+(-0,04)=-0,35
+S3=-0,44+0,29+0,32+0,08+(-0,19)+(-0,19)+(-0,20)=-0,33
+S4=0,44+(-0,27)+(-0,32)+(-0,16)+(-0,07)+0,29+0,20=0,10
+S5=-0,23+0,19+0,16+0+0,53+(-0,19)+(-0,10)=0,35
+Dari hasil perhitungan di atas, maka diperoleh nilai skor akhir yang kemudian dibuat perangkingan. Berikut adalah hasil skor akhirnya:
+Tabel 3.12
+Nilai Skor Akhir
+AlternatifNama AlternatifSkor AkhirPeringkatA5Yaris Cross0,351A1Raize0,222A4Rocky0,103A3HR-V-0,334A2Creta-0,355
+Hasil dari skor akhir pada tabel di atas menunjukkan kalau Alternatif 5 memiliki poin paling banyak sehingga menduduki peringkat pertama. Kemudian diikuti dengan Alternatif 1 yang masih memiliki opsi baik. Untuk Alternatif 4 memiliki nilai yang stabil yang tidak terlalu tinggi tapi juga tidak terlalu rendah. Sedangkan Alternatif 4, dan 5 memiliki nilai di bawah rata-rata yang cukup signifikan sehingga cukup buruk untuk menjadi opsi dalam memilih mobil.
+3.3	Perancangan Sistem
+      Perancangan sistem bertujuan untuk menggambarkan alur proses serta interaksi antara entitas luar dengan sistem yang dibangun. Pada penelitian ini sistem yang dirancang adalah Sistem Pendukung Keputusan (SPK) Pemilihan Mobil Menggunakan Metode MABAC.
+3.3.1 	Diagram Konteks
+      Diagram konteks menggambarkan hubungan antara sistem dengan entitas luar, yaitu User dan Admin. User dapat memberikan input berupa bobot tiap kriteria dan filter opsional sesuai kebutuhan, kemudian sistem akan memproses data menggunakan metode MABAC dan menampilkan rekomendasi mobil. Sedangkan Admin berperan dalam mengelola data mobil dan kriteria yang digunakan dalam proses pengambilan keputusan. Berikut adalah diagram konteks sistem berupa DFD Level 0 yang dirancang:
+
+Gambar 3.3 DFD Level 0
+
+      Pada gambar DFD Level 0 di atas, dapat dijelaskan sebagai berikut:
+> Entitas User:
+* Memberikan input bobot tiap kriteria.
+* Dapat menambahkan filter opsional untuk mempersempit alternatif.
+* Menerima output berupa rekomendasi mobil sesuai kriteria dan perhitungan metode MABAC.
+> Entitas Admin:
+* Melakukan login untuk memperoleh akses kelola data.
+* Mengelola data mobil dan data kriteria yang digunakan sistem.
+* Data yang dimasukkan admin akan disimpan dalam basis data untuk kemudian diproses oleh sistem.
+> Sistem SPK Pemilihan Mobil:
+* Memproses masukan dari user dan data dari admin menggunakan metode MABAC.
+* Menghasilkan rekomendasi mobil sebagai output untuk user.
+
+
+
+
+DAFTAR PUSTAKA
+
+Abdul Patahudin, F. A. (2022). SISTEM PENDUKUNG KEPUTUSAN PEMILIHAN MOBIL MENGGUNAKAN METODE COPRAS. Jurnal informasi dan Komputer .
+Dyan Almaas Turkita, M. I. (2024). Faktor-Faktor Yang Mempengaruhi Produksi Industri Otomotif Di Indonesia Tahun 2019 - 2021. Jurnal Ilmiah Wahana Pendidikan.
+Efraim Turban, R. S. (2014). Business Intelligence and Analytics Systems for Decision Support TENTH EDITION. Harlow: Pearson.
+Gaikindo. (2025, September). Gabungan Industri Kendaraan Bermotor Indonesia (GAIKINDO). From GAIKINDO Web Site: www.gaikindo.or.id
+Hariyanto, A. C. (2025). Modification of Multi-Attributive Border Approximation Area Comparison (MABAC) to Improve Multi-Criteria Assessment. JURNAL INFORMATIKA DAN REKAYASA PERANGKAT LUNAK (JATIKA) .
+Iklima Ermis Ismail, A. D. (2022). SISTEM PENDUKUNG KEPUTUSAN PEMBERIAN PINJAMAN MENGGUNAKAN METODE MULTIATTRIBUTE APPROXIMATION BORDER AREA COMPARISON. JTT (Jurnal Teknologi Terapan).
+Liza Safitri, A. S. (2023). Penerapan Metode Multi-Attributive Border Approximation Area Comparison (MABAC) dalam Menentukan Tingkat Kepuasan Pelanggan Agung Toyota Tanjungpinang. Prosiding Seminar Implementasi Teknologi Informasi dan Komunikasi.
+Masdir Munir, M. M. (2025). SISTEM PENDUKUNG KEPUTUSAN REKOMENDASI PEMILIHAN MOBIL BEKAS MENGGUNAKAN METODE SIMPLE ADDITIVE WEIGHTING (SAW). JITET (Jurnal Informatika dan Teknik Elektro Terapan).
+Ridwan, B. H. (2024). Review Metode Sistem Pendukung Keputusan (SPK) Terbaik untuk Seleksi Proposal Penelitian: Evaluasi Berdasarkan Kriteria Efektivitas dan Akurasi. Journal of Education Research.
+Rili Aditya, S. A. (2025). Sistem Pendukung Keputusan Pemilihan Asisten Laboratorium dengan Menggunakan Metode MABAC. Jurnal Ilmu Komputer dan Sistem Informasi (JIRSI).
+Sidik Praptomo, J. (2023). Sistem Pendukung Keputusan Pembelian Mobil Dengan Metode AHP Pada Bintang Motor Muara Bungo. Jurnal MANAJEMEN SISTEM INFORMASI. 
+Sri, M. (2020). Sistem Pendukung Keputusan Pemilihan Mobil Rental dengan Menggunakan Metode Topsis. JUKI : Jurnal Komputer dan Informatika.
+Sumarno, J. M. (2020). SISTEM PENDUKUNG KEPUTUSAN DALAM MENENTUKAN PEMILIHAN POSISI KEPALA UNIT (KANIT) PPA DENGAN METODE WEIGHT PRODUCT. JUST IT : Jurnal Sistem Informasi, Teknologi Informatika dan Komputer.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2
+
+
+
+
+
+2
+
+
+2
+
+
+2
+
+
+
+
+
+
+
+2
+
+
+2
+
+
+
+
+
+2
+
+
+2
+
+
+2
+
+

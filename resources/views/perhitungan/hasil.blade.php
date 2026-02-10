@@ -189,7 +189,7 @@
                         @foreach($kriterias as $kriteria)
                         <th class="px-6 py-4 text-center font-bold">
                             <div>{{ substr($kriteria->nama, 0, 15) }}</div>
-                            <div class="text-xs font-normal">(ID: {{ $kriteria->id }})</div>
+                            <div class="text-xs font-normal">({{ $kriteria->tipe === 'benefit' ? 'B' : 'C' }})</div>
                         </th>
                         @endforeach
                     </tr>
@@ -200,16 +200,41 @@
                         <td class="px-6 py-4 font-semibold text-gray-800">{{ $mobil->merk }} {{ $mobil->model }}</td>
                         @foreach($kriterias as $kriteria)
                         <td class="px-6 py-4 text-center font-mono">
-                            {{ number_format($matrix[$mobil->id][$kriteria->id], 2) }}
+                            {{ number_format($matrix[$mobil->id][$kriteria->id], 2, ',', '.') }}
                         </td>
                         @endforeach
                     </tr>
                     @endforeach
+
+                    <!-- Row: N. Max -->
+                    <tr class="bg-green-100 border-t-2 border-green-600 font-bold">
+                        <td class="px-6 py-4 font-bold text-green-800">N. Max</td>
+                        @foreach($kriterias as $kriteria)
+                        <td class="px-6 py-4 text-center font-mono text-green-800">
+                            {{ number_format($min_max_values['max'][$kriteria->id], 2, ',', '.') }}
+                        </td>
+                        @endforeach
+                    </tr>
+
+                    <!-- Row: N. Min -->
+                    <tr class="bg-red-100 border-b-2 border-red-600 font-bold">
+                        <td class="px-6 py-4 font-bold text-red-800">N. Min</td>
+                        @foreach($kriterias as $kriteria)
+                        <td class="px-6 py-4 text-center font-mono text-red-800">
+                            {{ number_format($min_max_values['min'][$kriteria->id], 2, ',', '.') }}
+                        </td>
+                        @endforeach
+                    </tr>
                 </tbody>
             </table>
         </div>
         <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p class="text-yellow-800 text-sm"><strong>📌 Catatan:</strong> Ini adalah matriks keputusan awal yang berisikan data nilai kriteria masing-masing mobil sebelum dinormalisasi.</p>
+            <p class="text-yellow-800 text-sm"><strong>📌 Catatan:</strong>
+                <br>• Matriks keputusan awal yang berisikan data nilai kriteria masing-masing mobil
+                <br>• <strong>N. Max:</strong> Nilai maksimum untuk setiap kriteria (digunakan dalam normalisasi)
+                <br>• <strong>N. Min:</strong> Nilai minimum untuk setiap kriteria (digunakan dalam normalisasi)
+                <br>• Indikator: <strong>B =</strong> Benefit (semakin tinggi semakin baik), <strong>C =</strong> Cost (semakin rendah semakin baik)
+            </p>
         </div>
     </div>
 
@@ -223,7 +248,7 @@
                         @foreach($kriterias as $kriteria)
                         <th class="px-6 py-4 text-center font-bold">
                             <div>{{ substr($kriteria->nama, 0, 15) }}</div>
-                            <div class="text-xs font-normal">(ID: {{ $kriteria->id }})</div>
+                            <div class="text-xs font-normal">({{ $kriteria->tipe === 'benefit' ? 'B' : 'C' }})</div>
                         </th>
                         @endforeach
                     </tr>
@@ -234,7 +259,7 @@
                         <td class="px-6 py-4 font-semibold text-gray-800">{{ $mobil->merk }} {{ $mobil->model }}</td>
                         @foreach($kriterias as $kriteria)
                         <td class="px-6 py-4 text-center font-mono text-blue-600 font-semibold">
-                            {{ number_format($normalized[$mobil->id][$kriteria->id], 4) }}
+                            {{ number_format($normalized[$mobil->id][$kriteria->id], 1) }}
                         </td>
                         @endforeach
                     </tr>
@@ -242,8 +267,21 @@
                 </tbody>
             </table>
         </div>
-        <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p class="text-yellow-800 text-sm"><strong>📌 Catatan:</strong> Matriks normalisasi menggunakan metode min-max dan diskala ke rentang 1-5. Rumus: ((nilai - min) / (max - min)) × 4 + 1</p>
+        <div class="mt-6 space-y-3">
+            <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p class="text-blue-800 text-sm font-semibold mb-2">📐 Formula Normalisasi Min-Max (Rentang 1-5):</p>
+                <div class="bg-white p-3 rounded border border-blue-300 text-sm font-mono space-y-2">
+                    <p><span class="text-green-700"><strong>Benefit</strong> (semakin tinggi semakin baik):</span><br>t<sub>ij</sub> = ((X<sub>ij</sub> - X<sub>min</sub>) / (X<sub>max</sub> - X<sub>min</sub>)) × 4 + 1</p>
+                    <p><span class="text-red-700"><strong>Cost</strong> (semakin rendah semakin baik):</span><br>t<sub>ij</sub> = ((X<sub>max</sub> - X<sub>ij</sub>) / (X<sub>max</sub> - X<sub>min</sub>)) × 4 + 1</p>
+                </div>
+            </div>
+            <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p class="text-yellow-800 text-sm"><strong>📌 Catatan:</strong>
+                    <br>• Normalisasi mengubah nilai mentah ke skala 1-5
+                    <br>• Indikator: <strong>B =</strong> Benefit, <strong>C =</strong> Cost
+                    <br>• Semua kriteria akan memiliki skala yang sama setelah normalisasi
+                </p>
+            </div>
         </div>
     </div>
 
@@ -257,7 +295,7 @@
                         @foreach($kriterias as $kriteria)
                         <th class="px-6 py-4 text-center font-bold">
                             <div>{{ substr($kriteria->nama, 0, 15) }}</div>
-                            <div class="text-xs font-normal">w={{ number_format($weights[$kriteria->id], 4) }}</div>
+                            <div class="text-xs font-normal">{{ $kriteria->tipe === 'benefit' ? 'B' : 'C' }} • w={{ number_format($weights[$kriteria->id], 3) }}</div>
                         </th>
                         @endforeach
                     </tr>
@@ -268,7 +306,7 @@
                         <td class="px-6 py-4 font-semibold text-gray-800">{{ $mobil->merk }} {{ $mobil->model }}</td>
                         @foreach($kriterias as $kriteria)
                         <td class="px-6 py-4 text-center font-mono text-green-600 font-semibold">
-                            {{ number_format($weighted[$mobil->id][$kriteria->id], 4) }}
+                            {{ number_format($weighted[$mobil->id][$kriteria->id], 3) }}
                         </td>
                         @endforeach
                     </tr>
@@ -276,23 +314,34 @@
                 </tbody>
             </table>
         </div>
-        <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p class="text-yellow-800 text-sm"><strong>📌 Catatan:</strong> Nilai terbobot = nilai normalisasi × bobot ternormalisasi kriteria.</p>
+        <div class="mt-6 space-y-3">
+            <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <p class="text-green-800 text-sm font-semibold mb-2">✖️ Rumus Pembobotan (Matriks V):</p>
+                <div class="bg-white p-3 rounded border border-green-300 text-sm font-mono">
+                    <p>V<sub>ij</sub> = Nilai Normalisasi<sub>ij</sub> × W<sub>j</sub> (bobot kriteria)</p>
+                </div>
+            </div>
+            <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p class="text-yellow-800 text-sm"><strong>📌 Catatan:</strong>
+                    <br>• Nilai terbobot = nilai normalisasi × bobot ternormalisasi kriteria
+                    <br>• Indikator: <strong>B =</strong> Benefit, <strong>C =</strong> Cost
+                    <br>• Ini adalah hasil sebelum dibandingkan dengan BAA
+                </p>
+            </div>
         </div>
     </div>
 
     <!-- TAB 6: BAA (Border Approximation Area) -->
     <div id="baa" class="tab-content hidden">
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6">Border Approximation Area (BAA)</h3>
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">Border Approximation Area (BAA / G)</h3>
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead>
                         <tr class="bg-purple-600 text-white">
                             <th class="px-6 py-4 text-left">Kriteria</th>
                             <th class="px-6 py-4 text-center">Tipe</th>
-                            <th class="px-6 py-4 text-right">Nilai BAA</th>
-                            <th class="px-6 py-4 text-left">Penjelasan</th>
+                            <th class="px-6 py-4 text-right">Nilai BAA (G)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -306,18 +355,11 @@
                                     @else
                                         bg-red-100 text-red-800
                                     @endif">
-                                    {{ ucfirst($kriteria->tipe) }}
+                                    {{ $kriteria->tipe === 'benefit' ? 'Benefit' : 'Cost' }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right font-mono font-bold text-purple-600">
                                 {{ number_format($baa[$kriteria->id], 4) }}
-                            </td>
-                            <td class="px-6 py-4 text-sm text-gray-600">
-                                @if($kriteria->tipe === 'benefit')
-                                    Minimum dari kolom (nilai terendah)
-                                @else
-                                    Maksimum dari kolom (nilai tertinggi)
-                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -325,8 +367,21 @@
                 </table>
             </div>
         </div>
-        <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p class="text-yellow-800 text-sm"><strong>📌 Catatan:</strong> BAA adalah garis batas area perkiraan. Untuk tipe benefit, BAA = minimum (semakin jauh dari min semakin baik). Untuk tipe cost, BAA = maximum (semakin jauh dari max semakin baik).</p>
+        <div class="mt-6 space-y-3">
+            <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                <p class="text-purple-800 text-sm font-semibold mb-2">🎯 Rumus Border Approximation Area:</p>
+                <div class="bg-white p-3 rounded border border-purple-300 text-sm font-mono">
+                    <p>B<sub>j</sub> = (1/m) × Σ(V<sub>ij</sub>)</p>
+                    <p class="text-xs text-gray-600 mt-2">BAA adalah RATA-RATA tertimbang dari setiap kriteria (berlaku untuk semua tipe)</p>
+                </div>
+            </div>
+            <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p class="text-yellow-800 text-sm"><strong>📌 Catatan:</strong>
+                    <br>• BAA = Border Approximation Area / Zona Batas / Garis Pembanding
+                    <br>• Ini adalah RATA-RATA dari nilai terbobot pada setiap kriteria
+                    <br>• Digunakan sebagai referensi untuk menentukan apakah alternatif berada di atas atau di bawah rata-rata
+                </p>
+            </div>
         </div>
     </div>
 
@@ -364,8 +419,22 @@
                 </tbody>
             </table>
         </div>
-        <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p class="text-yellow-800 text-sm"><strong>📌 Catatan:</strong> Q Matrix adalah jarak dari BAA. Untuk benefit: Q = nilai - BAA. Untuk cost: Q = BAA - nilai. Total Skor adalah jumlah semua nilai Q untuk setiap mobil, yang menjadi ranking final.</p>
+        <div class="mt-6 space-y-3">
+            <div class="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                <p class="text-orange-800 text-sm font-semibold mb-2">📍 Rumus Matriks Kedekatan (Q Matrix):</p>
+                <div class="bg-white p-3 rounded border border-orange-300 text-sm font-mono">
+                    <p>Q<sub>ij</sub> = V<sub>ij</sub> - B<sub>j</sub></p>
+                    <p class="text-xs text-gray-600 mt-2">(Formula SAMA untuk semua tipe kriteria, baik benefit maupun cost)</p>
+                </div>
+            </div>
+            <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p class="text-yellow-800 text-sm"><strong>📌 Catatan:</strong>
+                    <br>• Q Matrix = Matriks Kedekatan (jarak dari BAA)
+                    <br>• Nilai Q positif: alternatif lebih unggul dari rata-rata pada kriteria tersebut
+                    <br>• Nilai Q negatif: alternatif lebih buruk dari rata-rata pada kriteria tersebut
+                    <br>• <strong>Total Skor</strong> = jumlah semua nilai Q untuk setiap mobil → digunakan untuk ranking final
+                </p>
+            </div>
         </div>
     </div>
 
@@ -384,17 +453,17 @@ function showTab(tabName) {
     // Hide all tabs
     const contents = document.querySelectorAll('.tab-content');
     contents.forEach(content => content.classList.add('hidden'));
-    
+
     // Remove active class from all buttons
     const buttons = document.querySelectorAll('.tab-btn');
     buttons.forEach(btn => {
         btn.classList.remove('text-blue-600', 'border-blue-600');
         btn.classList.add('text-gray-600', 'border-transparent');
     });
-    
+
     // Show selected tab
     document.getElementById(tabName).classList.remove('hidden');
-    
+
     // Add active class to clicked button
     event.target.classList.remove('text-gray-600', 'border-transparent');
     event.target.classList.add('text-blue-600', 'border-blue-600');

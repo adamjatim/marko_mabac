@@ -13,11 +13,11 @@ class PerhitunganController extends Controller
     {
         $mobils = Mobil::all();
         $kriterias = Kriteria::where('is_active', true)->get();
-        
+
         // Get distinct merks and types for filtering
         $merks = Mobil::distinct()->pluck('merk')->sort()->toArray();
         $types = Mobil::distinct()->pluck('tipe')->sort()->toArray();
-        
+
         return view('perhitungan.index', [
             'mobils' => $mobils,
             'kriterias' => $kriterias,
@@ -90,7 +90,9 @@ class PerhitunganController extends Controller
         }
 
         // Step 1: Normalize matrix (min-max to 1-5 scale)
-        $normalized = $this->normalizeMatrix($matrix, $kriterias);
+        $normalization = $this->normalizeMatrix($matrix, $kriterias);
+        $normalized = $normalization['normalized'];
+        $min_max_values = $normalization['min_max'];
 
         // Step 2: Calculate weighted matrix
         $weighted = $this->weightMatrix($normalized, $weights, $criteria_order);
@@ -114,6 +116,7 @@ class PerhitunganController extends Controller
             'weighted' => $weighted,
             'baa' => $baa,
             'qMatrix' => $qMatrix,
+            'min_max_values' => $min_max_values,
         ]);
     }
 
@@ -131,6 +134,9 @@ class PerhitunganController extends Controller
         }
 
         // Normalize using min-max to 1-5 scale
+        // Formula:
+        // - Benefit: t_ij = ((x_ij - x_min_j) / (x_max_j - x_min_j)) * 4 + 1
+        // - Cost:    t_ij = ((x_max_j - x_ij) / (x_max_j - x_min_j)) * 4 + 1
         foreach ($matrix as $mobil_id => $row) {
             $normalized[$mobil_id] = [];
             foreach ($kriterias as $kriteria) {
@@ -139,19 +145,28 @@ class PerhitunganController extends Controller
                 $max = $max_vals[$kriteria->id];
 
                 if ($max == $min) {
-                    $normalized_val = 3; // middle value
+                    $normalized_val = 3; // middle value (1 + 4/2)
                 } else {
-                    // Normalize to 0-1
-                    $normalized_val = ($val - $min) / ($max - $min);
-                    // Scale to 1-5
-                    $normalized_val = 1 + ($normalized_val * 4);
+                    if ($kriteria->tipe === 'benefit') {
+                        // Benefit: semakin tinggi semakin baik
+                        $normalized_val = (($val - $min) / ($max - $min)) * 4 + 1;
+                    } else {
+                        // Cost: semakin rendah semakin baik
+                        $normalized_val = (($max - $val) / ($max - $min)) * 4 + 1;
+                    }
                 }
 
-                $normalized[$mobil_id][$kriteria->id] = $normalized_val;
+                $normalized[$mobil_id][$kriteria->id] = round($normalized_val, 1);
             }
         }
 
-        return $normalized;
+        return [
+            'normalized' => $normalized,
+            'min_max' => [
+                'min' => $min_vals,
+                'max' => $max_vals,
+            ]
+        ];
     }
 
     private function weightMatrix($normalized, $weights, $criteria_order)
@@ -170,16 +185,11 @@ class PerhitunganController extends Controller
     {
         $baa = [];
         foreach ($criteria_order as $kriteria_id) {
-            $kriteria = $kriterias->find($kriteria_id);
             $values = array_column($weighted, $kriteria_id);
 
-            if ($kriteria->tipe === 'benefit') {
-                // For benefit: BAA is the minimum
-                $baa[$kriteria_id] = min($values);
-            } else {
-                // For cost: BAA is the maximum
-                $baa[$kriteria_id] = max($values);
-            }
+            // BAA = Rata-rata tertimbang dari setiap kriteria (regardless of benefit/cost type)
+            // Formula: B_j = (1/m) × Σ(v_ij)
+            $baa[$kriteria_id] = array_sum($values) / count($values);
         }
         return $baa;
     }
@@ -190,14 +200,9 @@ class PerhitunganController extends Controller
         foreach ($weighted as $mobil_id => $row) {
             $qMatrix[$mobil_id] = [];
             foreach ($criteria_order as $kriteria_id) {
-                $kriteria = $kriterias->find($kriteria_id);
-                if ($kriteria->tipe === 'benefit') {
-                    // For benefit: Qi+ = normalized - BAA
-                    $qMatrix[$mobil_id][$kriteria_id] = $row[$kriteria_id] - $baa[$kriteria_id];
-                } else {
-                    // For cost: Qi- = BAA - normalized
-                    $qMatrix[$mobil_id][$kriteria_id] = $baa[$kriteria_id] - $row[$kriteria_id];
-                }
+                // Q_ij = v_ij - B_j (sama untuk benefit dan cost)
+                // Formula ini berlaku untuk semua tipe kriteria
+                $qMatrix[$mobil_id][$kriteria_id] = $row[$kriteria_id] - $baa[$kriteria_id];
             }
         }
         return $qMatrix;
