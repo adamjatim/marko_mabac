@@ -156,7 +156,7 @@ class PerhitunganController extends Controller
                     }
                 }
 
-                $normalized[$mobil_id][$kriteria->id] = round($normalized_val, 1);
+                $normalized[$mobil_id][$kriteria->id] = round($normalized_val, 4);
             }
         }
 
@@ -175,7 +175,7 @@ class PerhitunganController extends Controller
         foreach ($normalized as $mobil_id => $row) {
             $weighted[$mobil_id] = [];
             foreach ($criteria_order as $kriteria_id) {
-                $weighted[$mobil_id][$kriteria_id] = $row[$kriteria_id] * $weights[$kriteria_id];
+                $weighted[$mobil_id][$kriteria_id] = round($row[$kriteria_id] * $weights[$kriteria_id], 4);
             }
         }
         return $weighted;
@@ -189,7 +189,7 @@ class PerhitunganController extends Controller
 
             // BAA = Rata-rata tertimbang dari setiap kriteria (regardless of benefit/cost type)
             // Formula: B_j = (1/m) × Σ(v_ij)
-            $baa[$kriteria_id] = array_sum($values) / count($values);
+            $baa[$kriteria_id] = round(array_sum($values) / count($values), 4);
         }
         return $baa;
     }
@@ -202,7 +202,7 @@ class PerhitunganController extends Controller
             foreach ($criteria_order as $kriteria_id) {
                 // Q_ij = v_ij - B_j (sama untuk benefit dan cost)
                 // Formula ini berlaku untuk semua tipe kriteria
-                $qMatrix[$mobil_id][$kriteria_id] = $row[$kriteria_id] - $baa[$kriteria_id];
+                $qMatrix[$mobil_id][$kriteria_id] = round($row[$kriteria_id] - $baa[$kriteria_id], 4);
             }
         }
         return $qMatrix;
@@ -215,7 +215,7 @@ class PerhitunganController extends Controller
             $score = array_sum($qMatrix[$mobil->id] ?? []);
             $scores[] = [
                 'mobil' => $mobil,
-                'score' => (float) $score, // Ensure numeric type for proper sorting
+                'score' => round((float) $score, 4),
             ];
         }
 

@@ -21,7 +21,7 @@
     </div>
 
     <!-- TAB 1: HASIL AKHIR -->
-    <div id="hasil" class="tab-content">
+    <div id="hasil" class="tab-content flex flex-col">
         <div class="mb-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <p class="text-blue-800"><strong>📊 Analisis didasarkan pada {{ count($results) }} mobil yang dipilih dan {{ count($kriterias) }} kriteria aktif</strong></p>
         </div>
@@ -187,8 +187,8 @@
                     <tr class="bg-blue-600 text-white">
                         <th class="px-6 py-4 text-left font-bold">Mobil</th>
                         @foreach($kriterias as $kriteria)
-                        <th class="px-6 py-4 text-center font-bold">
-                            <div>{{ substr($kriteria->nama, 0, 15) }}</div>
+                        <th class="px-6 py-4 text-center font-bold ">
+                            <div class="whitespace-nowrap">{{ $kriteria->nama }}</div>
                             <div class="text-xs font-normal">({{ $kriteria->tipe === 'benefit' ? 'B' : 'C' }})</div>
                         </th>
                         @endforeach
@@ -239,15 +239,15 @@
     </div>
 
     <!-- TAB 4: NORMALISASI -->
-    <div id="normalized" class="tab-content hidden">
+    <div id="normalized" class="tab-content hidden ">
         <div class="bg-white rounded-lg shadow-lg overflow-x-auto">
-            <table class="w-full min-w-max">
+            <table class="w-auto">
                 <thead>
                     <tr class="bg-blue-600 text-white">
                         <th class="px-6 py-4 text-left font-bold">Mobil</th>
                         @foreach($kriterias as $kriteria)
                         <th class="px-6 py-4 text-center font-bold">
-                            <div>{{ substr($kriteria->nama, 0, 15) }}</div>
+                            <div class="whitespace-nowrap">{{ substr($kriteria->nama, 0, 15) }}</div>
                             <div class="text-xs font-normal">({{ $kriteria->tipe === 'benefit' ? 'B' : 'C' }})</div>
                         </th>
                         @endforeach
@@ -259,7 +259,7 @@
                         <td class="px-6 py-4 font-semibold text-gray-800">{{ $mobil->merk }} {{ $mobil->model }}</td>
                         @foreach($kriterias as $kriteria)
                         <td class="px-6 py-4 text-center font-mono text-blue-600 font-semibold">
-                            {{ number_format($normalized[$mobil->id][$kriteria->id], 1) }}
+                            {{ number_format($normalized[$mobil->id][$kriteria->id], 4) }}
                         </td>
                         @endforeach
                     </tr>
@@ -295,7 +295,7 @@
                         @foreach($kriterias as $kriteria)
                         <th class="px-6 py-4 text-center font-bold">
                             <div>{{ substr($kriteria->nama, 0, 15) }}</div>
-                            <div class="text-xs font-normal">{{ $kriteria->tipe === 'benefit' ? 'B' : 'C' }} • w={{ number_format($weights[$kriteria->id], 3) }}</div>
+                            <div class="text-xs font-normal">{{ $kriteria->tipe === 'benefit' ? 'B' : 'C' }} • w={{ number_format($weights[$kriteria->id], 4) }}</div>
                         </th>
                         @endforeach
                     </tr>
@@ -306,7 +306,7 @@
                         <td class="px-6 py-4 font-semibold text-gray-800">{{ $mobil->merk }} {{ $mobil->model }}</td>
                         @foreach($kriterias as $kriteria)
                         <td class="px-6 py-4 text-center font-mono text-green-600 font-semibold">
-                            {{ number_format($weighted[$mobil->id][$kriteria->id], 3) }}
+                            {{ number_format($weighted[$mobil->id][$kriteria->id], 4) }}
                         </td>
                         @endforeach
                     </tr>
@@ -341,13 +341,22 @@
                         <tr class="bg-purple-600 text-white">
                             <th class="px-6 py-4 text-left">Kriteria</th>
                             <th class="px-6 py-4 text-center">Tipe</th>
-                            <th class="px-6 py-4 text-right">Nilai BAA (G)</th>
+                            <th class="px-6 py-4 text-left">Proses Perhitungan</th>
+                            <th class="px-6 py-4 text-right">Hasil BAA</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($kriterias as $kriteria)
+                        @php
+                            $weighted_values = array_column($weighted, $kriteria->id);
+                            $values_str = implode(' + ', array_map(function($v) { return number_format($v, 4); }, $weighted_values));
+                            $sum = array_sum($weighted_values);
+                            $count = count($weighted_values);
+                        @endphp
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="px-6 py-4 font-semibold text-gray-800">{{ $kriteria->nama }}</td>
+                            <td class="px-6 py-4 font-semibold text-gray-800">
+                                {{ $kriteria->nama }} (K{{ $loop->index + 1 }})
+                            </td>
                             <td class="px-6 py-4 text-center">
                                 <span class="px-3 py-1 rounded-full text-sm font-semibold
                                     @if($kriteria->tipe === 'benefit')
@@ -358,8 +367,16 @@
                                     {{ $kriteria->tipe === 'benefit' ? 'Benefit' : 'Cost' }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-right font-mono font-bold text-purple-600">
-                                {{ number_format($baa[$kriteria->id], 4) }}
+                            <td class="px-6 py-4 text-left font-mono text-sm">
+                                <div class="bg-gray-50 p-3 rounded border border-gray-300">
+                                    <p>({{ $values_str }}) / {{ $count }}</p>
+                                    <p class="mt-2 text-gray-600">= {{ number_format($sum, 4) }} / {{ $count }}</p>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="font-mono font-bold text-purple-600 text-lg">
+                                    {{ number_format($baa[$kriteria->id], 4) }}
+                                </div>
                             </td>
                         </tr>
                         @endforeach
@@ -453,6 +470,8 @@ function showTab(tabName) {
     // Hide all tabs
     const contents = document.querySelectorAll('.tab-content');
     contents.forEach(content => content.classList.add('hidden'));
+    contents.forEach(content => content.classList.remove('flex'));
+    contents.forEach(content => content.classList.remove('flex-col'));
 
     // Remove active class from all buttons
     const buttons = document.querySelectorAll('.tab-btn');
@@ -463,6 +482,8 @@ function showTab(tabName) {
 
     // Show selected tab
     document.getElementById(tabName).classList.remove('hidden');
+    document.getElementById(tabName).classList.add('flex');
+    document.getElementById(tabName).classList.add('flex-col');
 
     // Add active class to clicked button
     event.target.classList.remove('text-gray-600', 'border-transparent');
