@@ -75,11 +75,17 @@ class PerhitunganController extends Controller
                     case 4: // Fitur Kenyamanan
                         $row[$kriteria->id] = $mobil->fitur_kenyamanan;
                         break;
-                    case 5: // Jarak Tempuh
-                        $row[$kriteria->id] = $mobil->jarak_tempuh;
+                    // case 5: // Jarak Tempuh
+                    //     $row[$kriteria->id] = $mobil->jarak_tempuh;
+                    //     break;
+                    // case 6: // Kapasitas Mesin
+                    //     $row[$kriteria->id] = $mobil->kapasitas_mesin;
+                    //     break;
+                    case 5: // Efisiensi Bahan Bakar
+                        $row[$kriteria->id] = $mobil->efisiensi_bahan_bakar;
                         break;
-                    case 6: // Kapasitas Mesin
-                        $row[$kriteria->id] = $mobil->kapasitas_mesin;
+                    case 6: // Performa (Horse Power/HP)
+                        $row[$kriteria->id] = $mobil->performa;
                         break;
                     case 7: // Pajak
                         $row[$kriteria->id] = $mobil->pajak;

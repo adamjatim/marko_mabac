@@ -50,12 +50,12 @@
                 <h3 class="text-lg font-bold text-gray-800 mb-4">⚙️ Spesifikasi Mesin</h3>
                 <ul class="space-y-3">
                     <li class="flex justify-between">
-                        <span class="text-gray-600">Kapasitas Mesin</span>
-                        <span class="font-semibold">{{ $mobil->kapasitas_mesin }} cc</span>
+                        <span class="text-gray-600">Performa</span>
+                        <span class="font-semibold">{{ $mobil->performa }} HP</span>
                     </li>
                     <li class="flex justify-between">
-                        <span class="text-gray-600">Jarak Tempuh</span>
-                        <span class="font-semibold">{{ $mobil->jarak_tempuh }} km/l</span>
+                        <span class="text-gray-600">Efisiensi Bahan Bakar</span>
+                        <span class="font-semibold">{{ $mobil->efisiensi_bahan_bakar }} km/l</span>
                     </li>
                 </ul>
             </div>

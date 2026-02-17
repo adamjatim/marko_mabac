@@ -21,8 +21,10 @@ return new class extends Migration
             $table->decimal('harga_jual_kembali', 15, 2);
             $table->integer('fitur_keamanan'); // jumlah fitur
             $table->integer('fitur_kenyamanan'); // jumlah fitur
-            $table->decimal('jarak_tempuh', 8, 2); // km/liter
-            $table->integer('kapasitas_mesin'); // cc
+            // $table->decimal('jarak_tempuh', 8, 2); // km/liter
+            $table->decimal('efisiensi_bahan_bakar', 8, 2); // km/liter
+            // $table->integer('kapasitas_mesin'); // cc
+            $table->integer('performa'); // cc
             $table->decimal('pajak', 15, 2);
             $table->text('gambar')->nullable();
             $table->timestamps();

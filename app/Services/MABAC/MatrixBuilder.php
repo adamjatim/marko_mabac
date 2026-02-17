@@ -7,10 +7,10 @@ use App\Models\Mobil;
 
 /**
  * MatrixBuilder - Responsible for building decision matrix from mobils and kriterias
- * 
+ *
  * This service encapsulates the logic of extracting attributes from Mobil model
  * and building a decision matrix for MABAC calculation.
- * 
+ *
  * Before: Hard-coded switch statements in controller
  * After: Configurable, testable, and reusable component
  */
@@ -25,23 +25,25 @@ class MatrixBuilder
         2 => 'harga_jual_kembali',
         3 => 'fitur_keamanan',
         4 => 'fitur_kenyamanan',
-        5 => 'jarak_tempuh',
-        6 => 'kapasitas_mesin',
+        // 5 => 'jarak_tempuh',
+        5 => 'efisiensi_bahan_bakar',
+        // 6 => 'kapasitas_mesin',
+        6 => 'performa',
         7 => 'pajak',
     ];
 
     /**
      * Build decision matrix from mobils and kriterias
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Collection $mobils
      * @param \Illuminate\Database\Eloquent\Collection $kriterias
      * @return array Matrix in format: [mobil_id => [kriteria_id => value, ...], ...]
-     * 
+     *
      * @example
      * $mobils = Mobil::all();
      * $kriterias = Kriteria::all();
      * $matrix = $builder->build($mobils, $kriterias);
-     * 
+     *
      * Result:
      * [
      *     1 => [1 => 300000000, 2 => 250000000, 3 => 4, ...],
@@ -65,7 +67,7 @@ class MatrixBuilder
 
     /**
      * Get attribute value from mobil by criteria ID
-     * 
+     *
      * @param \App\Models\Mobil $mobil
      * @param int $kriteriaId
      * @return mixed
@@ -84,7 +86,7 @@ class MatrixBuilder
     /**
      * Add a new criteria mapping
      * Useful for extending the mapping without modifying the constant
-     * 
+     *
      * @param int $kriteriaId
      * @param string $attributeName
      * @return void
@@ -100,7 +102,7 @@ class MatrixBuilder
 
     /**
      * Get all current mappings
-     * 
+     *
      * @return array
      */
     public function getMappings(): array

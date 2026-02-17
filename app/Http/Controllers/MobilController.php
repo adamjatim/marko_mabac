@@ -10,6 +10,7 @@ class MobilController extends Controller
     public function index(): View
     {
         $mobils = Mobil::all();
+        // dd($mobils);
         return view('mobil.index', ['mobils' => $mobils]);
     }
 

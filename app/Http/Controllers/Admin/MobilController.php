@@ -33,8 +33,10 @@ class MobilController extends Controller
             'harga_jual_kembali' => 'required|numeric',
             'fitur_keamanan' => 'required|integer',
             'fitur_kenyamanan' => 'required|integer',
-            'jarak_tempuh' => 'required|numeric',
-            'kapasitas_mesin' => 'required|integer',
+            // 'jarak_tempuh' => 'required|numeric',
+            'efisiensi_bahan_bakar' => 'required|numeric',
+            // 'kapasitas_mesin' => 'required|integer',
+            'performa' => 'required|integer',
             'pajak' => 'required|numeric',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
@@ -67,8 +69,10 @@ class MobilController extends Controller
             'harga_jual_kembali' => 'required|numeric',
             'fitur_keamanan' => 'required|integer',
             'fitur_kenyamanan' => 'required|integer',
-            'jarak_tempuh' => 'required|numeric',
-            'kapasitas_mesin' => 'required|integer',
+            // 'jarak_tempuh' => 'required|numeric',
+            'efisiensi_bahan_bakar' => 'required|numeric',
+            // 'kapasitas_mesin' => 'required|integer',
+            'performa' => 'required|integer',
             'pajak' => 'required|numeric',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
@@ -79,7 +83,7 @@ class MobilController extends Controller
             if ($mobil->gambar && file_exists(public_path($mobil->gambar))) {
                 unlink(public_path($mobil->gambar));
             }
-            
+
             $file = $request->file('gambar');
             $filename = time() . '_' . $file->getClientOriginalName();
             $path = $file->storeAs('mobils', $filename, 'public');
@@ -96,7 +100,7 @@ class MobilController extends Controller
         if ($mobil->gambar && file_exists(public_path($mobil->gambar))) {
             unlink(public_path($mobil->gambar));
         }
-        
+
         $mobil->delete();
         return redirect()->route('admin.mobil.index')->with('success', 'Mobil berhasil dihapus');
     }

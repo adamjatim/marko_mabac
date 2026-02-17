@@ -16,8 +16,8 @@ class Mobil extends Model
         'harga_jual_kembali',
         'fitur_keamanan',
         'fitur_kenyamanan',
-        'jarak_tempuh',
-        'kapasitas_mesin',
+        'efisiensi_bahan_bakar',
+        'performa',
         'pajak',
         'gambar',
     ];
@@ -25,7 +25,8 @@ class Mobil extends Model
     protected $casts = [
         'harga_baru' => 'decimal:2',
         'harga_jual_kembali' => 'decimal:2',
-        'jarak_tempuh' => 'decimal:2',
+        // 'jarak_tempuh' => 'decimal:2',
+        'efisiensi_bahan_bakar' => 'decimal:2',
         'pajak' => 'decimal:2',
     ];
 }

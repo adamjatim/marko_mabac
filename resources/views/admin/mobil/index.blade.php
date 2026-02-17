@@ -50,7 +50,7 @@
                         <td class="px-6 py-4 text-right font-semibold">
                             Rp {{ number_format($mobil->harga_baru, 0, ',', '.') }}
                         </td>
-                        <td class="px-6 py-4 text-right">{{ $mobil->jarak_tempuh }} km/l</td>
+                        <td class="px-6 py-4 text-right">{{ $mobil->efisiensi_bahan_bakar }} km/l</td>
                         <td class="px-6 py-4 text-center">
                             <a href="{{ route('admin.mobil.edit', $mobil) }}" class="text-blue-600 hover:text-blue-800 mr-4">Edit</a>
                             <form method="POST" action="{{ route('admin.mobil.destroy', $mobil) }}" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus?');">

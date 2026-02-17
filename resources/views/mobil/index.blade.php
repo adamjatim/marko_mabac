@@ -32,7 +32,8 @@
 
                 <div class="space-y-2 mb-4 text-sm text-gray-600">
                     <p><strong>Harga Baru:</strong> Rp {{ number_format($mobil->harga_baru, 0, ',', '.') }}</p>
-                    <p><strong>Jarak Tempuh:</strong> {{ $mobil->jarak_tempuh }} km/l</p>
+                    {{-- <p><strong>Jarak Tempuh:</strong> {{ $mobil->jarak_tempuh }} km/l</p> --}}
+                    <p><strong>Efisiensi Bahan Bakar:</strong> {{ $mobil->efisiensi_bahan_bakar }} km/l</p>
                     <p><strong>Fitur Keamanan:</strong> {{ $mobil->fitur_keamanan }}</p>
                 </div>
 

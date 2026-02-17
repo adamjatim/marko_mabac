@@ -72,14 +72,14 @@
 
             <div class="grid md:grid-cols-2 gap-6">
                 <div>
-                    <label for="jarak_tempuh" class="block font-semibold text-gray-800 mb-2">Jarak Tempuh (km/l)</label>
-                    <input type="number" id="jarak_tempuh" name="jarak_tempuh" value="{{ $mobil->jarak_tempuh }}" required step="0.1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    @error('jarak_tempuh') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                    <label for="efisiensi_bahan_bakar" class="block font-semibold text-gray-800 mb-2">Efisiensi Bahan Bakar (km/l)</label>
+                    <input type="number" id="efisiensi_bahan_bakar" name="efisiensi_bahan_bakar" value="{{ $mobil->efisiensi_bahan_bakar }}" required step="0.1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @error('efisiensi_bahan_bakar') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
-                    <label for="kapasitas_mesin" class="block font-semibold text-gray-800 mb-2">Kapasitas Mesin (cc)</label>
-                    <input type="number" id="kapasitas_mesin" name="kapasitas_mesin" value="{{ $mobil->kapasitas_mesin }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    @error('kapasitas_mesin') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                    <label for="performa" class="block font-semibold text-gray-800 mb-2">Performa (Horse Power/HP)</label>
+                    <input type="number" id="performa" name="performa" value="{{ $mobil->performa }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @error('performa') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>
 

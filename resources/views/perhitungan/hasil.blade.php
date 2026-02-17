@@ -73,7 +73,7 @@
                             <td class="px-6 py-4">
                                 <div class="text-sm space-y-1">
                                     <p><strong>Harga:</strong> Rp {{ number_format($result['mobil']->harga_baru, 0, ',', '.') }}</p>
-                                    <p><strong>Jarak Tempuh:</strong> {{ $result['mobil']->jarak_tempuh }} km/l</p>
+                                    <p><strong>Efisiensi Bahan Bakar:</strong> {{ $result['mobil']->efisiensi_bahan_bakar }} km/l</p>
                                     <p><strong>Fitur:</strong> K:{{ $result['mobil']->fitur_keamanan }} | Ny:{{ $result['mobil']->fitur_kenyamanan }}</p>
                                 </div>
                             </td>
