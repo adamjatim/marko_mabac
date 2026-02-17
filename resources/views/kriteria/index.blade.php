@@ -62,7 +62,11 @@
                 <tbody>
                     @forelse($kriterias as $kriteria)
                     <tr class="border-b hover:bg-gray-50 transition">
-                        <td class="px-6 py-4 font-semibold text-gray-800">{{ $kriteria->nama }}</td>
+                        <td class="px-6 py-4 font-semibold text-gray-800">
+                            <a href="{{ route('kriteria.show', $kriteria) }}" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                {{ $kriteria->nama }}
+                            </a>
+                        </td>
                         <td class="px-6 py-4">
                             <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
                                 @if($kriteria->tipe === 'benefit')

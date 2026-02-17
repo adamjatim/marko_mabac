@@ -19,6 +19,7 @@ Route::post('/perhitungan', [PerhitunganController::class, 'calculate'])->name('
 // Kriteria Routes (CRUD - dapat diakses dengan middleware auth jika diperlukan)
 Route::prefix('kriteria')->name('kriteria.')->group(function () {
     Route::get('/', [KriteriaController::class, 'index'])->name('index');
+    Route::get('/{kriteria}', [KriteriaController::class, 'show'])->name('show');
     Route::get('/create', [KriteriaController::class, 'create'])->name('create')->middleware('auth');
     Route::post('/', [KriteriaController::class, 'store'])->name('store')->middleware('auth');
     Route::get('/{kriteria}/edit', [KriteriaController::class, 'edit'])->name('edit')->middleware('auth');

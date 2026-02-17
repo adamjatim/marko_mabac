@@ -48,6 +48,12 @@ class KriteriaController extends Controller
             ->with('success', 'Kriteria berhasil ditambahkan');
     }
 
+    // Show detail kriteria
+    public function show(Kriteria $kriteria): View
+    {
+        return view('kriteria.show', ['kriteria' => $kriteria]);
+    }
+
     // Show edit form
     public function edit(Kriteria $kriteria): View
     {
