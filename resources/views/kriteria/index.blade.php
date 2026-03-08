@@ -122,7 +122,7 @@
                     @empty
                     <tr>
                         <td colspan="6" class="px-6 py-12 text-center text-gray-500">
-                            Belum ada kriteria. 
+                            Belum ada kriteria.
                             @auth
                             <a href="{{ route('kriteria.create') }}" class="text-blue-600 hover:text-blue-900 font-semibold">Tambah sekarang</a>
                             @else

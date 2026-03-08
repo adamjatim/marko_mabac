@@ -8,13 +8,13 @@
         <!-- Header dengan tombol kembali dan edit (jika auth) -->
         <div class="mb-8">
             <a href="{{ route('kriteria.index') }}" class="text-blue-600 hover:text-blue-800 mb-4 inline-block">← Kembali ke Daftar</a>
-            
+
             <div class="flex justify-between items-start">
                 <div>
                     <h1 class="text-4xl font-bold text-gray-800">{{ $kriteria->nama }}</h1>
                     <p class="text-gray-600 mt-2">Detail Kriteria Penilaian</p>
                 </div>
-                
+
                 <!-- Tombol Edit hanya untuk user yang terautentikasi (Admin) -->
                 @if(auth()->check())
                 <a href="{{ route('kriteria.edit', $kriteria) }}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-semibold">

@@ -48,7 +48,10 @@
         </div>
     </div>
 
-    <div class="mt-8">
+    <div class="mt-8 flex gap-4">
+        <a href="{{ route('admin.kriteria.pengaturan-bobot') }}" class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition font-semibold">
+            ⚙️ Pengaturan Bobot Kriteria
+        </a>
         <a href="{{ route('admin.dashboard') }}" class="bg-gray-600 text-white px-8 py-3 rounded-lg hover:bg-gray-700 transition">
             Kembali ke Dashboard
         </a>

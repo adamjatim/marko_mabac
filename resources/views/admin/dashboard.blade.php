@@ -58,6 +58,9 @@
                 <a href="{{ route('admin.kriteria.index') }}" class="block bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition text-center font-semibold">
                     Kelola Kriteria
                 </a>
+                <a href="{{ route('admin.kriteria.pengaturan-bobot') }}" class="block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition text-center font-semibold">
+                    ⚙️ Pengaturan Bobot Kriteria
+                </a>
             </div>
         </div>
 

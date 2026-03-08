@@ -5,9 +5,29 @@
 @section('content')
 <div class="max-w-5xl mx-auto px-4 py-12">
     <h1 class="text-4xl font-bold text-gray-800 mb-4">Perhitungan MABAC</h1>
-    <p class="text-gray-600 mb-8">Sesuaikan bobot kriteria sesuai preferensi Anda untuk mendapatkan rekomendasi mobil terbaik.</p>
+        <p class="text-gray-600 mb-8">Atur bobot kriteria sesuai preferensi Anda. Sistem akan secara otomatis menormalisasi nilai agar total = 1.0</p>
 
-    <div class="bg-white rounded-lg shadow-lg p-8">
+        <!-- Contoh Penggunaan -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+            <h3 class="text-lg font-semibold text-blue-900 mb-4">📋 Contoh Penggunaan Bobot:</h3>
+            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-white p-3 rounded border">
+                    <h4 class="font-semibold text-green-700 mb-2">✅ Semua Default</h4>
+                    <p class="text-gray-600">Kosongkan semua field</p>
+                    <code class="text-xs bg-gray-100 p-1 rounded block mt-1">0.22, 0.14, 0.16, 0.08, 0.18, 0.12, 0.10</code>
+                </div>
+                <div class="bg-white p-3 rounded border">
+                    <h4 class="font-semibold text-green-700 mb-2">✅ Raw Numbers</h4>
+                    <p class="text-gray-600">Gunakan angka sederhana</p>
+                    <code class="text-xs bg-gray-100 p-1 rounded block mt-1">9, 5, 6, 5, 2, 4, 7</code>
+                </div>
+                <div class="bg-white p-3 rounded border">
+                    <h4 class="font-semibold text-green-700 mb-2">✅ Desimal Langsung</h4>
+                    <p class="text-gray-600">Gunakan nilai desimal</p>    
+                    <code class="text-xs bg-gray-100 p-1 rounded block mt-1">0.25, 0.20, 0.15, 0.10, 0.12, 0.10, 0.08</code>
+                </div>
+            </div>
+        </div>
         <form method="POST" action="{{ route('perhitungan.calculate') }}" class="space-y-8">
             @csrf
 
@@ -36,9 +56,11 @@
                                 id="bobot_{{ $kriteria->id }}"
                                 name="bobot_{{ $kriteria->id }}"
                                 value="{{ $kriteria->bobot_default }}"
+                                data-default="{{ $kriteria->bobot_default }}"
+                                data-kriteria="{{ $kriteria->nama }}"
                                 min="0"
-                                max="1"
                                 step="0.01"
+                                placeholder="Kosong = default ({{ $kriteria->bobot_default }})"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                         </div>
@@ -48,8 +70,20 @@
 
                 <div class="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                     <p class="text-sm text-yellow-800">
-                        <strong>💡 Tips:</strong> Nilai bobot tidak harus dijumlahkan menjadi 1. Sistem akan secara otomatis menormalisasi nilai-nilai yang Anda masukkan.
+                        <strong>💡 Tips:</strong> 
+                        Nilai bobot tidak harus dijumlahkan menjadi 1. Sistem akan secara otomatis menormalisasi nilai-nilai yang Anda masukkan.
                     </p>
+                </div>
+                
+                <!-- Real-time Preview -->
+                <div id="bobotPreview" class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg" style="display: none;">
+                    <h4 class="font-semibold text-gray-800 mb-3">🔄 Preview Hasil Normalisasi:</h4>
+                    <div id="previewContent" class="text-sm text-gray-700 font-mono space-y-1">
+                        <!-- Preview content will be inserted here -->
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        Total akan otomatis = 1.0000 setelah normalisasi
+                    </div>
                 </div>
             </div>
 
@@ -232,5 +266,90 @@
 
     // Initialize count on page load
     document.addEventListener('DOMContentLoaded', updateSelectedCount);
+    
+    // Real-time weight preview
+    function updateWeightPreview() {
+        const weightInputs = document.querySelectorAll('input[name^="bobot_"]');
+        const preview = document.getElementById('bobotPreview');
+        const previewContent = document.getElementById('previewContent');
+        
+        let weights = [];
+        let hasAnyInput = false;
+        let allEmpty = true;
+        
+        // Collect input values
+        weightInputs.forEach(input => {
+            const value = parseFloat(input.value) || 0;
+            const defaultValue = parseFloat(input.getAttribute('data-default') || 0.1);
+            
+            if (input.value.trim() !== '') {
+                allEmpty = false;
+            }
+            
+            weights.push({
+                id: input.name,
+                label: input.closest('.flex').querySelector('label').textContent.trim(),
+                input: input.value.trim() === '' ? '' : value,
+                default: defaultValue,
+                hasInput: input.value.trim() !== ''
+            });
+            
+            if (value > 0) hasAnyInput = true;
+        });
+        
+        if (!hasAnyInput && allEmpty) {
+            preview.style.display = 'none';
+            return;
+        }
+        
+        // Calculate normalized weights
+        let totalWeight = 0;
+        weights.forEach(w => {
+            const useValue = w.hasInput ? w.input : w.default;
+            totalWeight += useValue;
+        });
+        
+        // Show preview
+        preview.style.display = 'block';
+        previewContent.innerHTML = '';
+        
+        weights.forEach(w => {
+            const useValue = w.hasInput ? w.input : w.default;
+            const normalized = totalWeight > 0 ? (useValue / totalWeight) : 0;
+            const percentage = (normalized * 100).toFixed(2);
+            
+            const source = w.hasInput ? '(input)' : '(default)';
+            const div = document.createElement('div');
+            div.innerHTML = `${w.label}: ${useValue} → ${normalized.toFixed(4)} (${percentage}%) ${source}`;
+            previewContent.appendChild(div);
+        });
+        
+        const totalDiv = document.createElement('div');
+        totalDiv.innerHTML = `<strong>Total sebelum normalisasi: ${totalWeight.toFixed(4)} → 1.0000</strong>`;
+        totalDiv.style.marginTop = '10px';
+        totalDiv.style.paddingTop = '8px';
+        totalDiv.style.borderTop = '1px solid #d1d5db';
+        totalDiv.style.color = '#059669';
+        previewContent.appendChild(totalDiv);
+    }
+    
+    // Initialize weight preview
+    document.addEventListener('DOMContentLoaded', function() {
+        const weightInputs = document.querySelectorAll('input[name^="bobot_"]');
+        
+        // Store default values
+        weightInputs.forEach(input => {
+            input.setAttribute('data-default', input.value);
+        });
+        
+        // Add change and input listeners
+        weightInputs.forEach(input => {
+            input.addEventListener('input', updateWeightPreview);
+            input.addEventListener('change', updateWeightPreview);
+        });
+        
+        // Initial preview
+        updateWeightPreview();
+    });
 </script>
 @endsection

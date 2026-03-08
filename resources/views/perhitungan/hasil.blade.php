@@ -5,7 +5,28 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-12">
     <h1 class="text-4xl font-bold text-gray-800 mb-2">Hasil Perhitungan MABAC</h1>
-    <p class="text-gray-600 mb-8">Detail alur perhitungan dan peringkat mobil berdasarkan analisis MABAC</p>
+    <p class="text-gray-600 mb-4">Detail alur perhitungan dan peringkat mobil berdasarkan analisis MABAC</p>
+    
+    <!-- Weight Info -->
+    @if(isset($weightInfo))
+    <div class="mb-6 p-4 rounded-lg border {{ $weightInfo['usedDefault'] ? 'bg-blue-50 border-blue-200' : ($weightInfo['allCustom'] ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200') }}">
+        <div class="flex items-center gap-2">
+            @if($weightInfo['usedDefault'])
+                <span class="text-2xl">⚖️</span>
+                <span class="font-semibold text-blue-900">Menggunakan Bobot Default</span>
+                <span class="text-sm text-blue-700">(Semua field bobot kosong)</span>
+            @elseif($weightInfo['allCustom'])
+                <span class="text-2xl">🎯</span>
+                <span class="font-semibold text-green-900">Menggunakan Bobot Custom</span>
+                <span class="text-sm text-green-700">(Semua kriteria diisi, total input: {{ number_format($weightInfo['totalInputBeforeNorm'], 2) }} → dinormalisasi ke 1.0000)</span>
+            @else
+                <span class="text-2xl">🔄</span>
+                <span class="font-semibold text-yellow-900">Menggunakan Bobot Campuran</span>
+                <span class="text-sm text-yellow-700">({{ $weightInfo['inputCount'] }}/{{ count($kriterias) }} kriteria diisi + default untuk yang kosong)</span>
+            @endif
+        </div>
+    </div>
+    @endif
 
     <!-- Navigation Tabs -->
     <div class="mb-8 border-b border-gray-200">
@@ -163,10 +184,22 @@
                                     {{ ucfirst($kriteria->tipe) }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-right font-mono">{{ number_format($kriteria->bobot_default, 2) }}</td>
+                            <td class="px-6 py-4 text-right font-mono">
+                                @if(isset($weightInfo['rawInputs'][$kriteria->id]))
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded">{{ $weightInfo['rawInputs'][$kriteria->id] }}</span>
+                                @else
+                                    <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded">{{ number_format($kriteria->bobot_default, 3) }}</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 text-right font-mono font-bold text-blue-600">{{ number_format($weights[$kriteria->id], 4) }}</td>
                             <td class="px-6 py-4 text-sm text-gray-600">
-                                {{ $kriteria->bobot_default }} ÷ {{ number_format($totalWeight, 2) }} = {{ number_format($weights[$kriteria->id], 4) }}
+                                @if(isset($weightInfo['rawInputs'][$kriteria->id]))
+                                    {{ $weightInfo['rawInputs'][$kriteria->id] }} ÷ {{ number_format($weightInfo['totalInputBeforeNorm'], 2) }} = {{ number_format($weights[$kriteria->id], 4) }}
+                                    <span class="text-green-600 font-semibold">(Custom)</span>
+                                @else
+                                    {{ $kriteria->bobot_default }} ÷ {{ number_format($weightInfo['totalInputBeforeNorm'], 2) }} = {{ number_format($weights[$kriteria->id], 4) }}
+                                    <span class="text-gray-500">(Default)</span>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

@@ -12,7 +12,7 @@
                     <h1 class="text-4xl font-bold text-gray-800">{{ $mobil->merk }} {{ $mobil->model }}</h1>
                     <p class="text-gray-600 mt-2">{{ $mobil->tahun }} | {{ $mobil->tipe }}</p>
                 </div>
-                
+
                 <!-- Tombol Edit hanya untuk user yang terautentikasi (Admin) -->
                 @if(auth()->check())
                     <a href="{{ route('admin.mobil.edit', $mobil) }}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-semibold">

@@ -15,7 +15,7 @@ class KriteriaController extends Controller
         $kriterias = Kriteria::orderBy('created_at', 'desc')->get();
         $aktifCount = Kriteria::where('is_active', true)->count();
         $totalCount = Kriteria::count();
-        
+
         return view('kriteria.index', [
             'kriterias' => $kriterias,
             'aktifCount' => $aktifCount,

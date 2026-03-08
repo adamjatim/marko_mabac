@@ -42,17 +42,85 @@ class PerhitunganController extends Controller
         // Get only selected mobils
         $mobils = Mobil::whereIn('id', $selected_mobil_ids)->get();
 
-        // Get weights from request or use defaults
+        // Extract and normalize weights from request
         $weights = [];
+        $inputWeights = [];
+        $allEmpty = true;
+        $rawUserInputs = []; // Store what user actually typed
+        
+        // Collect all weight inputs
         foreach ($kriterias as $kriteria) {
-            $key = 'bobot_' . $kriteria->id;
-            $weights[$kriteria->id] = (float) ($request->input($key) ?? $kriteria->bobot_default);
+            $inputValue = $request->input('bobot_' . $kriteria->id);
+            
+            if ($inputValue !== null && $inputValue !== '') {
+                $inputWeights[$kriteria->id] = (float) $inputValue;
+                $rawUserInputs[$kriteria->id] = $inputValue; // Store original input
+                $allEmpty = false;
+            }
         }
-
-        // Normalize weights to sum = 1
-        $weightSum = array_sum($weights);
-        if ($weightSum > 0) {
-            $weights = array_map(fn($w) => $w / $weightSum, $weights);
+        
+        // Determine weights based on input
+        if ($allEmpty) {
+            // Use default weights if all inputs are empty
+            foreach ($kriterias as $kriteria) {
+                $weights[$kriteria->id] = (float) $kriteria->bobot_default;
+            }
+        } else {
+            // Check if all criteria have values
+            $hasPartialInput = count($inputWeights) < count($kriterias);
+            
+            if ($hasPartialInput) {
+                // Some criteria are empty - fill with defaults
+                foreach ($kriterias as $kriteria) {
+                    if (isset($inputWeights[$kriteria->id])) {
+                        $weights[$kriteria->id] = $inputWeights[$kriteria->id];
+                    } else {
+                        $weights[$kriteria->id] = (float) $kriteria->bobot_default;
+                    }
+                }
+            } else {
+                // All criteria have values - use input
+                $weights = $inputWeights;
+            }
+        }
+        
+        // Normalize weights so they sum to 1.0
+        $totalWeight = array_sum($weights);
+        if ($totalWeight > 0) {
+            foreach ($weights as $id => $weight) {
+                $weights[$id] = round($weight / $totalWeight, 4);
+            }
+        }
+        
+        // DEBUG: Show what weights are being used
+        $debugInfo = [
+            'input_received' => [],
+            'final_weights' => $weights,
+            'total_before_norm' => $totalWeight,
+            'total_after_norm' => array_sum($weights),
+            'empty_count' => 0,
+            'filled_count' => 0
+        ];
+        
+        foreach ($kriterias as $kriteria) {
+            $inputValue = $request->input('bobot_' . $kriteria->id);
+            $debugInfo['input_received'][$kriteria->id] = [
+                'name' => $kriteria->nama,
+                'input' => $inputValue,
+                'default' => $kriteria->bobot_default,
+                'final_weight' => $weights[$kriteria->id]
+            ];
+            
+            if ($inputValue === null || $inputValue === '') {
+                $debugInfo['empty_count']++;
+            } else {
+                $debugInfo['filled_count']++;
+            }
+        }
+        
+        // If debug mode, show weights info  
+        if ($request->has('debug')) {
+            return response()->json($debugInfo);
         }
 
         // Build decision matrix (mobils x criteria)
@@ -123,6 +191,15 @@ class PerhitunganController extends Controller
             'baa' => $baa,
             'qMatrix' => $qMatrix,
             'min_max_values' => $min_max_values,
+            'weightInfo' => [
+                'totalInputBeforeNorm' => $totalWeight ?? 1,
+                'usedDefault' => $allEmpty ?? false,
+                'partialInput' => isset($inputWeights) && !$allEmpty && count($inputWeights) < count($kriterias),
+                'allCustom' => isset($inputWeights) && !$allEmpty && count($inputWeights) == count($kriterias),
+                'inputCount' => isset($inputWeights) ? count($inputWeights) : 0,
+                'userInputs' => $inputWeights ?? [],
+                'rawInputs' => $rawUserInputs ?? []
+            ]
         ]);
     }
 
