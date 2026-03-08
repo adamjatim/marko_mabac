@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('nilai_penyebut', 10, 2)->default(1); // Total L
             $table->decimal('hasil_bobot', 5, 4); // L / Total(L)
             $table->timestamps();
-            
+
             // Ensure one bobot per kriteria
             $table->unique('kriteria_id');
         });

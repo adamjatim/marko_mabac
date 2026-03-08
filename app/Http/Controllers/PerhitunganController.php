@@ -47,18 +47,18 @@ class PerhitunganController extends Controller
         $inputWeights = [];
         $allEmpty = true;
         $rawUserInputs = []; // Store what user actually typed
-        
+
         // Collect all weight inputs
         foreach ($kriterias as $kriteria) {
             $inputValue = $request->input('bobot_' . $kriteria->id);
-            
+
             if ($inputValue !== null && $inputValue !== '') {
                 $inputWeights[$kriteria->id] = (float) $inputValue;
                 $rawUserInputs[$kriteria->id] = $inputValue; // Store original input
                 $allEmpty = false;
             }
         }
-        
+
         // Determine weights based on input
         if ($allEmpty) {
             // Use default weights if all inputs are empty
@@ -68,7 +68,7 @@ class PerhitunganController extends Controller
         } else {
             // Check if all criteria have values
             $hasPartialInput = count($inputWeights) < count($kriterias);
-            
+
             if ($hasPartialInput) {
                 // Some criteria are empty - fill with defaults
                 foreach ($kriterias as $kriteria) {
@@ -83,7 +83,7 @@ class PerhitunganController extends Controller
                 $weights = $inputWeights;
             }
         }
-        
+
         // Normalize weights so they sum to 1.0
         $totalWeight = array_sum($weights);
         if ($totalWeight > 0) {
@@ -91,7 +91,7 @@ class PerhitunganController extends Controller
                 $weights[$id] = round($weight / $totalWeight, 4);
             }
         }
-        
+
         // DEBUG: Show what weights are being used
         $debugInfo = [
             'input_received' => [],
@@ -101,7 +101,7 @@ class PerhitunganController extends Controller
             'empty_count' => 0,
             'filled_count' => 0
         ];
-        
+
         foreach ($kriterias as $kriteria) {
             $inputValue = $request->input('bobot_' . $kriteria->id);
             $debugInfo['input_received'][$kriteria->id] = [
@@ -110,15 +110,15 @@ class PerhitunganController extends Controller
                 'default' => $kriteria->bobot_default,
                 'final_weight' => $weights[$kriteria->id]
             ];
-            
+
             if ($inputValue === null || $inputValue === '') {
                 $debugInfo['empty_count']++;
             } else {
                 $debugInfo['filled_count']++;
             }
         }
-        
-        // If debug mode, show weights info  
+
+        // If debug mode, show weights info
         if ($request->has('debug')) {
             return response()->json($debugInfo);
         }

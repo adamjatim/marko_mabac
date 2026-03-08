@@ -40,7 +40,7 @@ class KriteriaController extends Controller
     public function pengaturanBobot(): View
     {
         $kriterias = Kriteria::where('is_active', true)->get();
-        
+
         // Ambil bobot yang sudah tersimpan atau tampilkan input kosong
         $bobotData = [];
         foreach ($kriterias as $kriteria) {
@@ -74,14 +74,14 @@ class KriteriaController extends Controller
     public function hitungBobot(Request $request): View
     {
         $kriterias = Kriteria::where('is_active', true)->get();
-        
+
         // Siapkan array nilai input
         $nilaiInputs = $request->input('nilai_input', []);
 
         try {
             // Hitung bobot
             $hasilHitung = BobotKriteria::hitungBobot($nilaiInputs);
-            
+
             // Konversi ke format yang sesuai untuk view
             $bobotData = [];
             foreach ($hasilHitung as $kriteria_id => $data) {
@@ -131,17 +131,17 @@ class KriteriaController extends Controller
     public function simpanBobot(Request $request): RedirectResponse
     {
         $kriterias = Kriteria::where('is_active', true)->get();
-        
+
         // Siapkan array nilai input
         $nilaiInputs = $request->input('nilai_input', []);
 
         try {
             // Hitung bobot
             $hasilHitung = BobotKriteria::hitungBobot($nilaiInputs);
-            
+
             // Simpan bobot
             BobotKriteria::simpanBobot($hasilHitung);
-            
+
             return redirect()->route('admin.kriteria.pengaturan-bobot')
                 ->with('success', 'Pengaturan bobot kriteria berhasil disimpan!');
         } catch (\Exception $e) {
@@ -156,7 +156,7 @@ class KriteriaController extends Controller
     public function resetBobot(): RedirectResponse
     {
         BobotKriteria::truncate();
-        
+
         return redirect()->route('admin.kriteria.pengaturan-bobot')
             ->with('success', 'Bobot kriteria telah direset ke nilai default!');
     }

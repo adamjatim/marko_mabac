@@ -15,17 +15,17 @@ class DemoSimplifiedWeight extends Command
     {
         $this->info('🎯 DEMO SISTEM BOBOT DINAMIS YANG DISEDERHANAKAN');
         $this->info('');
-        
+
         $kriterias = Kriteria::where('is_active', true)->get();
-        
+
         // Demo 1: Semua kosong
         $this->info('📋 Demo 1: Semua input KOSONG (gunakan default)');
         $request1 = new Request();
         $weights1 = $this->processWeights($request1, $kriterias);
         $this->showWeights($weights1, 'Default');
         $this->info('');
-        
-        // Demo 2: Input raw numbers 
+
+        // Demo 2: Input raw numbers
         $this->info('📋 Demo 2: Input RAW NUMBERS (9,5,6,5,2,4,7)');
         $request2 = new Request();
         $request2->merge([
@@ -35,7 +35,7 @@ class DemoSimplifiedWeight extends Command
         $weights2 = $this->processWeights($request2, $kriterias);
         $this->showWeights($weights2, 'Raw Numbers');
         $this->info('');
-        
+
         // Demo 3: Input campuran
         $this->info('📋 Demo 3: Input CAMPURAN (sebagian diisi, sebagian kosong)');
         $request3 = new Request();
@@ -46,30 +46,30 @@ class DemoSimplifiedWeight extends Command
         $weights3 = $this->processWeights($request3, $kriterias);
         $this->showWeights($weights3, 'Mixed');
         $this->info('');
-        
+
         $this->info('✨ KESIMPULAN: Sistem bisa menangani SEMUA skenario!');
         $this->info('✅ Kosongkan semua = default');
         $this->info('✅ Isi semua = normalisasi input');
         $this->info('✅ Isi sebagian = campuran input + default');
         $this->info('✅ Total selalu = 1.0000');
     }
-    
+
     private function processWeights($request, $kriterias)
     {
         $weights = [];
         $inputWeights = [];
         $allEmpty = true;
-        
+
         // Collect all weight inputs
         foreach ($kriterias as $kriteria) {
             $inputValue = $request->input('bobot_' . $kriteria->id);
-            
+
             if ($inputValue !== null && $inputValue !== '') {
                 $inputWeights[$kriteria->id] = (float) $inputValue;
                 $allEmpty = false;
             }
         }
-        
+
         // Determine weights based on input
         if ($allEmpty) {
             // Use default weights if all inputs are empty
@@ -79,7 +79,7 @@ class DemoSimplifiedWeight extends Command
         } else {
             // Check if all criteria have values
             $hasPartialInput = count($inputWeights) < count($kriterias);
-            
+
             if ($hasPartialInput) {
                 // Some criteria are empty - fill with defaults
                 foreach ($kriterias as $kriteria) {
@@ -94,7 +94,7 @@ class DemoSimplifiedWeight extends Command
                 $weights = $inputWeights;
             }
         }
-        
+
         // Normalize weights so they sum to 1.0
         $totalWeight = array_sum($weights);
         if ($totalWeight > 0) {
@@ -102,21 +102,21 @@ class DemoSimplifiedWeight extends Command
                 $weights[$id] = round($weight / $totalWeight, 4);
             }
         }
-        
+
         return $weights;
     }
-    
+
     private function showWeights($weights, $type)
     {
         $kriterias = Kriteria::where('is_active', true)->get()->keyBy('id');
         $total = 0;
-        
+
         foreach ($weights as $id => $weight) {
             $percentage = ($weight * 100);
             $this->info("K{$id} ({$kriterias[$id]->nama}): {$weight} ({$percentage}%)");
             $total += $weight;
         }
-        
+
         $this->info("Total: {$total} ✓");
     }
 }

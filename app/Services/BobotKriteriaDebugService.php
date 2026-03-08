@@ -39,10 +39,10 @@ class BobotKriteriaDebugService
                     'message' => "Table bobot_kriterias tidak ada. Jalankan: php artisan migrate",
                 ];
             }
-            
+
             $count = \App\Models\BobotKriteria::count();
             $columns = $schema->getColumnListing('bobot_kriterias');
-            
+
             return [
                 'success' => true,
                 'message' => "Table OK",
@@ -66,14 +66,14 @@ class BobotKriteriaDebugService
     {
         try {
             $kriterias = \App\Models\Kriteria::where('is_active', true)->get();
-            
+
             if ($kriterias->count() === 0) {
                 return [
                     'success' => false,
                     'message' => "Tidak ada kriteria aktif",
                 ];
             }
-            
+
             return [
                 'success' => true,
                 'message' => "Kriteria aktif ditemukan",
@@ -110,14 +110,14 @@ class BobotKriteriaDebugService
                 6 => 4,
                 7 => 7,
             ];
-            
+
             $hasil = \App\Models\BobotKriteria::hitungBobot($nilaiInputs);
-            
+
             $totalBobot = 0;
             foreach ($hasil as $item) {
                 $totalBobot += $item['hasil_bobot'];
             }
-            
+
             return [
                 'success' => true,
                 'message' => "Hitungan OK",
@@ -143,14 +143,14 @@ class BobotKriteriaDebugService
     {
         try {
             $viewPath = resource_path('views/admin/kriteria/pengaturan-bobot.blade.php');
-            
+
             if (!file_exists($viewPath)) {
                 return [
                     'success' => false,
                     'message' => "View file tidak ditemukan: $viewPath",
                 ];
             }
-            
+
             return [
                 'success' => true,
                 'message' => "View file OK",

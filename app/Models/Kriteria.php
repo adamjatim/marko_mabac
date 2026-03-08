@@ -9,7 +9,7 @@ class Kriteria extends Model
 {
     protected $table = 'kriterias';
     protected $fillable = ['nama', 'tipe', 'bobot_default', 'is_active', 'keterangan'];
-    
+
     protected $casts = [
         'bobot_default' => 'float',
         'is_active' => 'boolean',

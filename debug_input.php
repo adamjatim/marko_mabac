@@ -38,11 +38,11 @@ try {
     foreach ($hasil as $kriteria_id => $data) {
         echo "K{$kriteria_id}: input={$data['nilai_input']}, penyebut={$data['nilai_penyebut']}, bobot={$data['hasil_bobot']}\n";
     }
-    
+
     // Test total
     $totalBobot = array_sum(array_column($hasil, 'hasil_bobot'));
     echo "Total bobot: {$totalBobot}\n";
-    
+
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage() . "\n";
 }

@@ -15,12 +15,12 @@ class TestBrowserFlow extends Command
     {
         $this->info('🌐 Testing Browser Form Submission Flow');
         $this->info('');
-        
+
         // Test dengan debug mode
         $this->info('📝 Testing calculation with custom weights:');
         $this->info('Harga Baru: 9, Harga Jual: 5, Fitur Keamanan: 6, dst.');
         $this->info('');
-        
+
         $this->info('💡 To test in browser, go to:');
         $this->info('http://your-domain/perhitungan');
         $this->info('');

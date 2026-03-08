@@ -50,13 +50,13 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Kriteria Admin Routes
     Route::prefix('kriteria')->name('kriteria.')->group(function () {
         Route::get('/', [AdminKriteriaController::class, 'index'])->name('index');
-        
+
         // Routes untuk pengaturan bobot (HARUS SEBELUM ROUTE DENGAN PARAMETER)
         Route::get('/pengaturan-bobot', [AdminKriteriaController::class, 'pengaturanBobot'])->name('pengaturan-bobot');
         Route::post('/hitung-bobot', [AdminKriteriaController::class, 'hitungBobot'])->name('hitung-bobot');
         Route::post('/simpan-bobot', [AdminKriteriaController::class, 'simpanBobot'])->name('simpan-bobot');
         Route::post('/reset-bobot', [AdminKriteriaController::class, 'resetBobot'])->name('reset-bobot');
-        
+
         // Routes dengan parameter (SETELAH ROUTE SPESIFIK)
         Route::get('/{kriteria}/edit', [AdminKriteriaController::class, 'edit'])->name('edit');
         Route::put('/{kriteria}', [AdminKriteriaController::class, 'update'])->name('update');

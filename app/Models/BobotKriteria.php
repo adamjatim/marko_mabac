@@ -9,7 +9,7 @@ class BobotKriteria extends Model
 {
     protected $table = 'bobot_kriterias';
     protected $fillable = ['kriteria_id', 'nilai_input', 'nilai_penyebut', 'hasil_bobot'];
-    
+
     protected $casts = [
         'nilai_input' => 'float',
         'nilai_penyebut' => 'float',
@@ -32,10 +32,10 @@ class BobotKriteria extends Model
     {
         $kriterias = Kriteria::where('is_active', true)->get();
         $result = [];
-        
+
         // Cek apakah semua kosong
         $semuaKosong = collect($nilaiInputs)->every(fn($val) => is_null($val) || $val === '');
-        
+
         if ($semuaKosong) {
             // Gunakan bobot default
             foreach ($kriterias as $kriteria) {
@@ -77,7 +77,7 @@ class BobotKriteria extends Model
         foreach ($kriterias as $kriteria) {
             $nilaiInput = (float) ($nilaiInputs[$kriteria->id] ?? 0);
             $hasilBobot = $nilaiInput / $totalNilai;
-            
+
             $result[$kriteria->id] = [
                 'nilai_input' => $nilaiInput,
                 'nilai_penyebut' => $totalNilai,

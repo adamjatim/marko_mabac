@@ -34,10 +34,10 @@ class BobotDebugCommand extends Command
         foreach ($results as $testName => $result) {
             $status = $result['success'] ? '✓ PASS' : '✗ FAIL';
             $color = $result['success'] ? 'info' : 'error';
-            
+
             $this->line("<fg=$color>$status</> - <options=bold>$testName</>", verbosity: 2);
             $this->line("  {$result['message']}");
-            
+
             if (isset($result['data'])) {
                 foreach ($result['data'] as $key => $value) {
                     if (is_array($value)) {
@@ -47,13 +47,13 @@ class BobotDebugCommand extends Command
                     }
                 }
             }
-            
+
             $this->newLine();
         }
 
         // Summary
         $allPass = collect($results)->every(fn($r) => $r['success']);
-        
+
         if ($allPass) {
             $this->info('====== SEMUA TEST BERHASIL ✓ ======');
             return Command::SUCCESS;

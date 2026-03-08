@@ -23,7 +23,7 @@
                 </div>
                 <div class="bg-white p-3 rounded border">
                     <h4 class="font-semibold text-green-700 mb-2">✅ Desimal Langsung</h4>
-                    <p class="text-gray-600">Gunakan nilai desimal</p>    
+                    <p class="text-gray-600">Gunakan nilai desimal</p>
                     <code class="text-xs bg-gray-100 p-1 rounded block mt-1">0.25, 0.20, 0.15, 0.10, 0.12, 0.10, 0.08</code>
                 </div>
             </div>
@@ -70,11 +70,11 @@
 
                 <div class="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                     <p class="text-sm text-yellow-800">
-                        <strong>💡 Tips:</strong> 
+                        <strong>💡 Tips:</strong>
                         Nilai bobot tidak harus dijumlahkan menjadi 1. Sistem akan secara otomatis menormalisasi nilai-nilai yang Anda masukkan.
                     </p>
                 </div>
-                
+
                 <!-- Real-time Preview -->
                 <div id="bobotPreview" class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg" style="display: none;">
                     <h4 class="font-semibold text-gray-800 mb-3">🔄 Preview Hasil Normalisasi:</h4>
@@ -266,26 +266,26 @@
 
     // Initialize count on page load
     document.addEventListener('DOMContentLoaded', updateSelectedCount);
-    
+
     // Real-time weight preview
     function updateWeightPreview() {
         const weightInputs = document.querySelectorAll('input[name^="bobot_"]');
         const preview = document.getElementById('bobotPreview');
         const previewContent = document.getElementById('previewContent');
-        
+
         let weights = [];
         let hasAnyInput = false;
         let allEmpty = true;
-        
+
         // Collect input values
         weightInputs.forEach(input => {
             const value = parseFloat(input.value) || 0;
             const defaultValue = parseFloat(input.getAttribute('data-default') || 0.1);
-            
+
             if (input.value.trim() !== '') {
                 allEmpty = false;
             }
-            
+
             weights.push({
                 id: input.name,
                 label: input.closest('.flex').querySelector('label').textContent.trim(),
@@ -293,37 +293,37 @@
                 default: defaultValue,
                 hasInput: input.value.trim() !== ''
             });
-            
+
             if (value > 0) hasAnyInput = true;
         });
-        
+
         if (!hasAnyInput && allEmpty) {
             preview.style.display = 'none';
             return;
         }
-        
+
         // Calculate normalized weights
         let totalWeight = 0;
         weights.forEach(w => {
             const useValue = w.hasInput ? w.input : w.default;
             totalWeight += useValue;
         });
-        
+
         // Show preview
         preview.style.display = 'block';
         previewContent.innerHTML = '';
-        
+
         weights.forEach(w => {
             const useValue = w.hasInput ? w.input : w.default;
             const normalized = totalWeight > 0 ? (useValue / totalWeight) : 0;
             const percentage = (normalized * 100).toFixed(2);
-            
+
             const source = w.hasInput ? '(input)' : '(default)';
             const div = document.createElement('div');
             div.innerHTML = `${w.label}: ${useValue} → ${normalized.toFixed(4)} (${percentage}%) ${source}`;
             previewContent.appendChild(div);
         });
-        
+
         const totalDiv = document.createElement('div');
         totalDiv.innerHTML = `<strong>Total sebelum normalisasi: ${totalWeight.toFixed(4)} → 1.0000</strong>`;
         totalDiv.style.marginTop = '10px';
@@ -332,22 +332,22 @@
         totalDiv.style.color = '#059669';
         previewContent.appendChild(totalDiv);
     }
-    
+
     // Initialize weight preview
     document.addEventListener('DOMContentLoaded', function() {
         const weightInputs = document.querySelectorAll('input[name^="bobot_"]');
-        
+
         // Store default values
         weightInputs.forEach(input => {
             input.setAttribute('data-default', input.value);
         });
-        
+
         // Add change and input listeners
         weightInputs.forEach(input => {
             input.addEventListener('input', updateWeightPreview);
             input.addEventListener('change', updateWeightPreview);
         });
-        
+
         // Initial preview
         updateWeightPreview();
     });

@@ -34,7 +34,7 @@
         <!-- Penjelasan -->
         <div class="mb-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <h3 class="text-lg font-semibold text-blue-900 mb-4">📋 Panduan Pengaturan Bobot</h3>
-            
+
             <div class="grid md:grid-cols-2 gap-4 mb-4">
                 <div class="bg-white p-4 rounded border border-green-300">
                     <h4 class="font-semibold text-green-700 mb-2">✅ Opsi 1: Bobot Default</h4>
@@ -44,7 +44,7 @@
                         Harga Baru: 0.22, Harga Jual: 0.14, dll.
                     </div>
                 </div>
-                
+
                 <div class="bg-white p-4 rounded border border-green-300">
                     <h4 class="font-semibold text-green-700 mb-2">✅ Opsi 2: Input Custom</h4>
                     <p class="text-sm text-gray-700 mb-2">Isi <strong>SEMUA</strong> field dengan angka</p>
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="grid md:grid-cols-2 gap-4">
                 <div class="bg-red-50 p-3 rounded border border-red-300">
                     <h4 class="font-semibold text-red-700 mb-2">❌ Error: Sebagian Kosong</h4>
@@ -69,7 +69,7 @@
 
         <form id="formBobot" method="POST" action="{{ route('admin.kriteria.hitung-bobot') }}">
             @csrf
-            
+
             <div class="overflow-x-auto mb-8">
                 <table class="w-full border-collapse">
                     <thead>
@@ -86,7 +86,7 @@
                         @php
                             $totalNilaiInput = 0;
                             $kriteriaCount = count($kriterias);
-                            
+
                             // Hitung total nilai input jika sudah ada data
                             foreach ($bobotData as $kriteria_id => $data) {
                                 if ($data['nilai_input'] !== null) {
@@ -112,9 +112,9 @@
                                 </span>
                             </td>
                             <td class="px-4 py-3 border text-center">
-                                <input 
-                                    type="number" 
-                                    name="nilai_input[{{ $kriteria->id }}]" 
+                                <input
+                                    type="number"
+                                    name="nilai_input[{{ $kriteria->id }}]"
                                     class="form-input text-center w-full border border-gray-300 rounded px-2 py-2"
                                     step="0.01"
                                     min="0.01"
@@ -124,14 +124,14 @@
                                     title="Masukkan angka mentah (contoh: 9) atau desimal (contoh: 0.22). Sistem akan normalisasi otomatis.">
                             </td>
                             <td class="px-4 py-3 border text-center">
-                                <span class="inline-block bg-gray-100 px-3 py-2 rounded min-w-[100px]" 
+                                <span class="inline-block bg-gray-100 px-3 py-2 rounded min-w-[100px]"
                                       data-formula="{{ $kriteria->id }}">
                                     {{ $nilaiInput !== '' && $totalPenyebut > 0 ? ($nilaiInput . ' / ' . $totalPenyebut) : '-' }}
                                 </span>
                             </td>
                             <td class="px-4 py-3 border text-center">
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     class="form-input text-center w-full border border-gray-300 rounded px-2 py-2 bg-yellow-50 font-mono"
                                     value="{{ $isDefault ? $hasilBobot . ' (Default)' : number_format($hasilBobot, 4) }}"
                                     data-original="{{ $isDefault ? $hasilBobot . ' (Default)' : number_format($hasilBobot, 4) }}"
@@ -166,7 +166,7 @@
                 </a>
                 <form method="POST" action="{{ route('admin.kriteria.reset-bobot') }}" style="display: inline;">
                     @csrf
-                    <button type="submit" class="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition" 
+                    <button type="submit" class="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition"
                             onclick="return confirm('Apakah Anda yakin ingin mereset semua bobot ke nilai default?')">
                         Reset ke Default
                     </button>
@@ -267,7 +267,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const formBobot = document.getElementById('formBobot');
     const inputs = document.querySelectorAll('input[name^="nilai_input"]');
-    
+
     inputs.forEach(input => {
         input.addEventListener('change', updateCalculation);
     });
@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const val = input.value.trim();
             const formulaSpan = document.querySelector(`[data-formula="${input.dataset.kriteriaId}"]`);
             const hasilBobotInput = input.closest('tr').querySelector('input[readonly]');
-            
+
             if (val === '') {
                 // Kosong
                 if (emptyCount === inputs.length) {
@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Semua terisi - hitung dan tampilkan hasil
                     formulaSpan.textContent = `${val} / ${totalInput}`;
                     formulaSpan.style.color = 'black';
-                    
+
                     // Hitung bobot aktual dan update field hasil
                     if (hasilBobotInput && numVal > 0) {
                         const hasilBobot = numVal / totalInput;
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update total
         const totalDisplay = document.getElementById('totalNilaiInput');
         const totalHasil = document.getElementById('totalHasilBobot');
-        
+
         if (emptyCount === inputs.length) {
             totalDisplay.textContent = '-';
             totalHasil.textContent = '-';

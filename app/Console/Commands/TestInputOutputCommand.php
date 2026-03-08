@@ -49,15 +49,15 @@ class TestInputOutputCommand extends Command
                 $this->line("K{$kriteria_id}: input={$data['nilai_input']}, penyebut={$data['nilai_penyebut']}, bobot={$data['hasil_bobot']}");
                 $totalBobot += $data['hasil_bobot'];
             }
-            
+
             $this->line("Total bobot: {$totalBobot}");
-            
+
             if (abs($totalBobot - 1.0) < 0.001) {
                 $this->info('✓ Total bobot = 1.0 (CORRECT)');
             } else {
                 $this->error('✗ Total bobot != 1.0 (ERROR)');
             }
-            
+
         } catch (\Exception $e) {
             $this->error('Error: ' . $e->getMessage());
         }

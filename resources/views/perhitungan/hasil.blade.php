@@ -6,7 +6,7 @@
 <div class="max-w-7xl mx-auto px-4 py-12">
     <h1 class="text-4xl font-bold text-gray-800 mb-2">Hasil Perhitungan MABAC</h1>
     <p class="text-gray-600 mb-4">Detail alur perhitungan dan peringkat mobil berdasarkan analisis MABAC</p>
-    
+
     <!-- Weight Info -->
     @if(isset($weightInfo))
     <div class="mb-6 p-4 rounded-lg border {{ $weightInfo['usedDefault'] ? 'bg-blue-50 border-blue-200' : ($weightInfo['allCustom'] ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200') }}">
